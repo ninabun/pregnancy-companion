@@ -1,0 +1,9 @@
+{
+  "name": "antenatal-care-companion",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test"
+  }
+}

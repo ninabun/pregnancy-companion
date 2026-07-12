@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antenatal Care Companion</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="prototype-banner"><span>CONCEPT PROTOTYPE</span> Fictional maternity data · Not connected to a live clinical system · Not intended for clinical use</div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">A</span><span><b>Antenatal</b><small>Care Companion</small></span></a>
+      <nav id="mainNav">
+        <p>EXPERIENCES</p>
+        <button class="nav-item active" data-view="patient"><span>♡</span> Patient mobile</button>
+        <button class="nav-item" data-view="staff"><span>▦</span> Staff dashboard <em>3</em></button>
+        <button class="nav-item" data-view="content"><span>▤</span> Content manager</button>
+        <p>MODEL</p>
+        <button class="nav-item" data-view="governance"><span>◇</span> Governance</button>
+      </nav>
+      <div class="sidebar-note"><span>✓</span><div><b>Governed workflow</b><small>Rules, humans and audit trails remain in control.</small></div></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div><span class="eyebrow" id="viewEyebrow">PATIENT EXPERIENCE</span><h1 id="viewTitle">Good afternoon, Maya</h1></div>
+        <div class="top-actions"><button class="language">文 / EN</button><button class="profile"><span>MP</span><div><b>Maya P.</b><small>Fictional patient</small></div></button></div>
+      </header>
+
+      <section id="patient" class="view active">
+        <div class="safety-strip"><span>!</span><div><b>Need urgent help?</b><small>This companion does not replace maternity assessment or emergency services.</small></div><button data-modal="urgent">Call maternity triage</button></div>
+        <div class="mobile-tabs" id="patientTabs">
+          <button class="active" data-tab="home">Home</button><button data-tab="timeline">Timeline</button><button data-tab="ask">Ask</button><button data-tab="family">Family & labour</button><button data-tab="info">My information</button><button data-tab="status">Status</button>
+        </div>
+
+        <div id="home" class="patient-panel active">
+          <div class="hero-grid">
+            <article class="week-card">
+              <div class="week-copy"><span class="pill light">WEEK 15 OF 40</span><h2>Your baby is about<br>the size of an apple.</h2><p>About 10 cm from head to bottom. Tiny facial movements are beginning and your baby can hear sounds from inside your body.</p><div class="progress"><i style="width:37.5%"></i></div><div class="progress-label"><span>Trimester 2</span><span>25 weeks to go</span></div></div>
+              <div class="baby-orbit"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><span>15</span><small>weeks</small></div>
+            </article>
+            <article class="next-card card"><div class="card-head"><span class="icon blue">▣</span><span class="pill blue">NEXT</span></div><h3>Midwife appointment</h3><p>18 July 2026 · 10:30 AM</p><hr><small>PREPARE FOR YOUR VISIT</small><ul><li>Bring your maternity record</li><li>Write down questions you want to ask</li><li>Routine blood pressure and urine check</li></ul><button class="text-button" data-tab-link="timeline">View your timeline →</button></article>
+          </div>
+          <div class="section-heading"><div><span class="eyebrow">COMING UP</span><h2>Your next milestones</h2></div><button class="outline" data-tab-link="timeline">View full timeline</button></div>
+          <div class="milestone-grid">
+            <article class="card milestone"><span class="date-tile">18<small>JUL</small></span><div><small>WEEK 16</small><h3>Routine antenatal visit</h3><p>Blood pressure, urine and wellbeing check.</p></div></article>
+            <article class="card milestone featured"><span class="date-tile">10<small>AUG</small></span><div><small>WEEKS 18–22</small><h3>Morphology scan</h3><p>A detailed ultrasound to check your baby's development.</p></div><span class="booked">BOOKED</span></article>
+            <article class="card milestone"><span class="date-tile">07<small>SEP</small></span><div><small>WEEKS 24–28</small><h3>Glucose screening & blood tests</h3><p>Checks for gestational diabetes and anaemia.</p></div></article>
+          </div>
+          <div class="ask-banner"><div><span class="spark">✦</span><span><b>Questions about your pregnancy?</b><small>Get approved, week-specific information — or raise a concern for clinical review.</small></span></div><button data-tab-link="ask">Ask the Companion</button></div>
+          <div class="info-grid"><article class="card"><span class="icon coral">◎</span><h3>Your milestone</h3><p>Second trimester</p><small>Many people find energy levels improve during this stage. Every pregnancy is different.</small></article><article class="card"><span class="icon yellow">☼</span><h3>This week's focus</h3><p>Food, hydration and movement</p><small>Follow approved maternity guidance and ask your care team about individual needs.</small></article><article class="card"><span class="icon green">⌁</span><h3>Next investigation</h3><p>Morphology ultrasound</p><small>Usually offered between 18–22 weeks. Yours is booked for 10 August.</small></article></div>
+        </div>
+
+        <div id="timeline" class="patient-panel">
+          <div class="page-intro"><span class="eyebrow">PERSONALISED JOURNEY</span><h2>Your pregnancy timeline</h2><p>Approved milestones based on your current gestational profile.</p></div>
+          <div class="timeline-list">
+            <article class="timeline-row complete"><span class="timeline-dot">✓</span><div><small>WEEKS 11–14 · COMPLETED 2 JUL</small><h3>Dating and Down's syndrome screening</h3><p>Ultrasound and approved screening information.</p></div><span class="status done">Completed</span></article>
+            <article class="timeline-row current"><span class="timeline-dot">15</span><div><small>WEEK 15 · YOU ARE HERE</small><h3>Second trimester begins</h3><p>Gestation-specific guidance and appointment preparation.</p></div><span class="status review">Current</span></article>
+            <article class="timeline-row"><span class="timeline-dot">16</span><div><small>18 JUL · 10:30 AM</small><h3>Routine antenatal visit</h3><p>Blood pressure, urine and wellbeing check.</p></div><button class="outline small">Reminder on</button></article>
+            <article class="timeline-row"><span class="timeline-dot">20</span><div><small>10 AUG · BOOKED</small><h3>Morphology scan</h3><p>Detailed ultrasound generally offered at 18–22 weeks.</p></div><span class="status booked">Booked</span></article>
+            <article class="timeline-row"><span class="timeline-dot">28</span><div><small>24–28 WEEKS</small><h3>Blood tests and glucose screening</h3><p>Checks may include anaemia and gestational diabetes.</p></div><span class="status">Upcoming</span></article>
+            <article class="timeline-row"><span class="timeline-dot">36</span><div><small>35–37 WEEKS</small><h3>Group B Streptococcus screening</h3><p>Your maternity team will explain local screening arrangements.</p></div><span class="status">Upcoming</span></article>
+          </div>
+        </div>
+
+        <div id="ask" class="patient-panel">
+          <div class="ask-layout">
+            <div>
+              <div class="page-intro"><span class="eyebrow">APPROVED INFORMATION & ESCALATION</span><h2>Ask the Companion</h2><p>Ask a pregnancy question or describe a concern. A clinician makes all clinical decisions.</p></div>
+              <div class="chat-card card">
+                <div id="chatMessages" class="messages"><div class="message bot"><span>✦</span><div><p>Hello Maya. I can explain approved pregnancy information or help structure a concern for your maternity team.</p><small>I cannot diagnose or tell you that a symptom is harmless.</small></div></div></div>
+                <div class="suggestions" id="suggestions"><button>What happens at 15 weeks?</button><button>When is my morphology scan?</button><button>What blood tests are coming next?</button><button>Who can accompany me during labour?</button><button>Can children visit the postnatal ward?</button><button data-concern="bleeding">I have vaginal bleeding.</button><button data-concern="watery">I have clear watery discharge.</button><button>What does my reviewed swab result mean?</button></div>
+                <form id="chatForm"><input id="chatInput" placeholder="Ask a question or describe a concern…" autocomplete="off"><button aria-label="Send">➜</button></form>
+              </div>
+            </div>
+            <aside class="warning-card"><span class="warning-icon">!</span><h3>Contact a healthcare provider</h3><p>Use maternity triage or urgent services for:</p><ul><li>Vaginal bleeding</li><li>Abdominal pain</li><li>Watery or clear discharge</li><li>Reduced fetal movement, when relevant</li><li>Fever or severe vomiting</li><li>Headache or visual disturbance</li><li>Any other concern</li></ul><button data-modal="urgent">View urgent contact routes</button><small>Do not wait for a reply in this app if you feel seriously unwell.</small></aside>
+          </div>
+        </div>
+
+        <div id="family" class="patient-panel">
+          <div class="page-intro"><span class="eyebrow">VISITOR & LABOUR SUPPORT</span><h2>Practical guidance for your family</h2><p>Hospital-specific arrangements for ward visits and your nominated labour support person.</p></div>
+          <div class="service-notice"><span>i</span><div><b>Prototype arrangements</b><small>These rules are fictional examples. Check the latest ward notice or contact the maternity service before travelling.</small></div><span class="status pending">Updated today</span></div>
+          <div class="family-grid">
+            <article class="card guidance-card"><div class="guidance-head"><span class="icon green">A</span><div><small>ANTENATAL WARD</small><h3>Visiting information</h3></div></div><dl class="guidance-list"><div><dt>Visiting hours</dt><dd>2:00–8:00 PM</dd></div><div><dt>Visitors</dt><dd>Two registered visitors at a time</dd></div><div><dt>Children</dt><dd>Check with the ward before visiting</dd></div><div><dt>Registration</dt><dd>Photo identification at reception</dd></div></dl><button class="outline family-action" data-family-detail="antenatal">View full ward guidance</button></article>
+            <article class="card guidance-card"><div class="guidance-head"><span class="icon coral">P</span><div><small>POSTNATAL WARD</small><h3>After delivery</h3></div></div><dl class="guidance-list"><div><dt>Partner or carer</dt><dd>Access during designated hours</dd></div><div><dt>Other visitors</dt><dd>Two registered visitors at a time</dd></div><div><dt>Baby safety</dt><dd>Clean hands before contact</dd></div><div><dt>Temporary changes</dt><dd>Shown in live service notices</dd></div></dl><button class="outline family-action" data-family-detail="postnatal">View postnatal guidance</button></article>
+            <article class="card guidance-card featured-guidance"><div class="guidance-head"><span class="icon yellow">L</span><div><small>LABOUR ROOM</small><h3>Your accompanying person</h3></div></div><dl class="guidance-list"><div><dt>Nomination</dt><dd>One designated adult</dd></div><div><dt>Bring</dt><dd>Registration confirmation and photo ID</dd></div><div><dt>Screening</dt><dd>Health and infection-control check</dd></div><div><dt>Entry</dt><dd>When invited by the labour team</dd></div></dl><button class="primary family-action" data-family-detail="labour">Check accompanying criteria</button></article>
+          </div>
+          <div class="family-boundary"><span>◇</span><div><h3>Clinical care and safety come first</h3><p>Accompaniment may be restricted because of the mother’s clinical condition, capacity, infection control, privacy, an emergency procedure or professional assessment. The maternity team makes the final decision.</p></div></div>
+          <div class="family-faq"><div class="section-heading"><div><span class="eyebrow">FAMILY QUESTIONS</span><h2>Quick answers</h2></div></div><div class="faq-grid"><button data-ask-link="What are the visiting hours for the antenatal ward?">What are the antenatal ward visiting hours?<span>→</span></button><button data-ask-link="Can I change my nominated accompanying person?">Can I change my nominated person?<span>→</span></button><button data-ask-link="What documents should my accompanying person bring?">What documents should they bring?<span>→</span></button><button data-ask-link="Can my partner stay during an emergency procedure?">What happens during an emergency procedure?<span>→</span></button></div></div>
+        </div>
+
+        <div id="info" class="patient-panel"><div class="page-intro"><span class="eyebrow">APPROVED RESOURCES</span><h2>My information</h2><p>Content reviewed and approved by the fictional maternity service.</p></div><div class="resource-grid"><article class="resource card"><span>PDF</span><div><small>FACTSHEET · VERSION 3.2</small><h3>Your second trimester</h3><p>Approved 20 June 2026</p></div><button>Open</button></article><article class="resource card"><span>PDF</span><div><small>INVESTIGATION</small><h3>Morphology scan explained</h3><p>What it checks and how to prepare</p></div><button>Open</button></article><article class="resource card"><span>▣</span><div><small>APPOINTMENT</small><h3>Preparing for your visit</h3><p>Your checklist for 18 July</p></div><button>Open</button></article><article class="resource card"><span>☎</span><div><small>CONTACTS</small><h3>Maternity contact information</h3><p>Triage, clinic and emergency routes</p></div><button data-modal="urgent">Open</button></article><article class="resource card"><span>Rx</span><div><small>CLINICIAN-PROVIDED</small><h3>Medication information</h3><p>Information supplied by your care team</p></div><button>Open</button></article></div></div>
+
+        <div id="status" class="patient-panel"><div class="page-intro"><span class="eyebrow">TRACKABLE COMMUNICATION</span><h2>Request status</h2><p>See when your maternity team receives and reviews a concern.</p></div><article class="request-card card"><div class="request-head"><div><span class="status review">Under clinical review</span><h3>Abdominal discomfort</h3><p>Request AC-2048 · Submitted today at 1:42 PM</p></div><button class="outline">View details</button></div><div class="status-track"><div class="complete"><i>✓</i><b>Submitted</b><small>1:42 PM</small></div><div class="complete"><i>✓</i><b>Received</b><small>1:42 PM</small></div><div class="complete"><i>✓</i><b>Acknowledged</b><small>1:47 PM</small></div><div class="active"><i>4</i><b>Under clinical review</b><small>Midwife team</small></div><div><i>5</i><b>Callback arranged</b><small>Pending</small></div><div><i>6</i><b>Completed</b><small>Pending</small></div></div><div class="safety-note"><b>Symptoms worsening or feel seriously unwell?</b><span>Do not wait for an app update. Call maternity triage or emergency services now.</span><button data-modal="urgent">Call now</button></div></article></div>
+      </section>
+
+      <section id="staff" class="view">
+        <div class="staff-stats"><article><span class="icon coral">!</span><div><small>AWAITING ACKNOWLEDGEMENT</small><b>3</b></div></article><article><span class="icon yellow">◷</span><div><small>UNDER CLINICAL REVIEW</small><b>5</b></div></article><article><span class="icon green">✓</span><div><small>COMPLETED TODAY</small><b>18</b></div></article><article><span class="icon blue">↗</span><div><small>ESCALATED</small><b>1</b></div></article></div>
+        <div class="dashboard-toolbar"><div><span class="eyebrow">SYNTHETIC DATA</span><h2>Incoming concern queue</h2></div><div><input id="queueSearch" placeholder="Search patient ID…"><select id="queueFilter"><option>All concerns</option><option>Needs acknowledgement</option><option>Escalated</option></select></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Patient</th><th>Gestation</th><th>Concern</th><th>Safety indicators</th><th>Waiting</th><th>Owner</th><th>Status</th><th></th></tr></thead><tbody id="queueBody"><tr data-status="Needs acknowledgement"><td><b>MAT-1048</b><small>Fictional ID</small></td><td>31+4</td><td><b>Reduced fetal movement</b><small>Started this morning</small></td><td><span class="tag danger">Deterministic alert</span></td><td><b class="danger-text">12 min</b></td><td>Unassigned</td><td><span class="status escalated">Escalated</span></td><td><button class="row-action">Review</button></td></tr><tr data-status="Needs acknowledgement"><td><b>MAT-2083</b><small>Fictional ID</small></td><td>22+1</td><td><b>Clear watery discharge</b><small>Continuous, 40 min</small></td><td><span class="tag danger">Warning sign</span></td><td><b>8 min</b></td><td>Unassigned</td><td><span class="status new">New</span></td><td><button class="row-action">Review</button></td></tr><tr data-status="All concerns"><td><b>MAT-3197</b><small>Fictional ID</small></td><td>15+0</td><td><b>Vaginal bleeding</b><small>Structured answers complete</small></td><td><span class="tag danger">Warning sign</span></td><td><b>6 min</b></td><td>Midwife Chen</td><td><span class="status review">Acknowledged</span></td><td><button class="row-action">Review</button></td></tr><tr data-status="All concerns"><td><b>MAT-4022</b><small>Fictional ID</small></td><td>36+2</td><td><b>Reviewed positive swab</b><small>Information request</small></td><td><span class="tag safe">Reviewed result</span></td><td><b>21 min</b></td><td>Midwife Lim</td><td><span class="status review">Under review</span></td><td><button class="row-action">Review</button></td></tr></tbody></table></div>
+        <div id="reviewDrawer" class="drawer"><button class="drawer-close">×</button><span class="status escalated">Deterministic alert</span><h2>Reduced fetal movement</h2><p>MAT-1048 · 31 weeks + 4 days</p><div class="structured"><h3>Structured answers</h3><dl><dt>Started</dt><dd>This morning</dd><dt>Usual pattern changed?</dt><dd>Yes</dd><dt>Other symptoms</dt><dd>None reported</dd><dt>Callback number confirmed</dt><dd>Yes</dd></dl></div><div class="audit"><h3>Escalation timeline</h3><p><b>14:03</b> Concern submitted</p><p><b>14:03</b> Rule RM-01 matched</p><p><b>14:04</b> Team notified; response timer started</p></div><button class="primary wide" id="acknowledge">Acknowledge & assign to me</button><small class="accountability">Urgency and assessment decisions remain with the reviewing clinician.</small></div>
+      </section>
+
+      <section id="content" class="view">
+        <div class="content-header"><div><span class="eyebrow">GOVERNED CONFIGURATION</span><h2>Content management</h2><p>Manage approved information, schedules, rules and contact destinations.</p></div><button class="primary" id="newContent">+ New content item</button></div>
+        <div class="content-stats"><article><b>48</b><span>Published items</span></article><article><b>6</b><span>Awaiting approval</span></article><article><b>12</b><span>Gestational windows</span></article><article><b>9</b><span>Active escalation rules</span></article></div>
+        <div class="management-layout"><aside class="management-nav"><button class="active">Gestational-week content <span>40</span></button><button>Investigation windows <span>12</span></button><button>Sonography schedules <span>4</span></button><button>Approved factsheets <span>18</span></button><button>Reminder templates <span>9</span></button><button>Escalation rules <span>9</span></button><button>Contact destinations <span>6</span></button></aside><div class="management-main card"><div class="management-toolbar"><h3>Gestational-week content</h3><div><input placeholder="Search content…"><select><option>All approval states</option><option>Approved</option><option>Draft</option></select></div></div><table><thead><tr><th>Week</th><th>Content title</th><th>Version</th><th>Last reviewed</th><th>Approval</th><th></th></tr></thead><tbody><tr><td><b>15</b></td><td><b>Your baby at 15 weeks</b><small>Fetal development</small></td><td>v3.2</td><td>20 Jun 2026</td><td><span class="status done">Approved</span></td><td>•••</td></tr><tr><td><b>15</b></td><td><b>Second trimester wellbeing</b><small>Patient education</small></td><td>v2.1</td><td>18 Jun 2026</td><td><span class="status done">Approved</span></td><td>•••</td></tr><tr><td><b>16</b></td><td><b>Preparing for your visit</b><small>Appointment instruction</small></td><td>v1.4</td><td>04 Jul 2026</td><td><span class="status pending">Awaiting approval</span></td><td>•••</td></tr><tr><td><b>18–22</b></td><td><b>Morphology scan explained</b><small>Investigation information</small></td><td>v4.0</td><td>28 Jun 2026</td><td><span class="status done">Approved</span></td><td>•••</td></tr></tbody></table><div class="version-note"><span>✓</span><p><b>Version-controlled publishing</b><br>Only approved versions are visible to patients. Every update records author, approver and effective date.</p></div></div></div>
+      </section>
+
+      <section id="governance" class="view">
+        <div class="governance-hero"><span class="eyebrow">SHARED OPERATING MODEL</span><h2>One governed model.<br>Three healthcare products.</h2><p>AI helps understand. Workflow validates and coordinates. People retain accountability.</p></div>
+        <div class="product-comparison"><article><span>01 · COMPARE</span><h3>Medication Consistency Verification</h3><p>Structured discrepancy detection and review.</p></article><article><span>02 · COORDINATE</span><h3>Roster Automation Workflow Extension</h3><p>Rules-led scheduling and human publication.</p></article><article class="active"><span>03 · SUPPORT & RESPOND</span><h3>Antenatal Care Companion</h3><p>Personalised guidance and governed escalation.</p></article></div>
+        <div class="operating-flow"><div><i>01</i><span>Trigger or<br>conversation</span></div><b>→</b><div><i>02</i><span>AI interpretation<br>when needed</span></div><b>→</b><div><i>03</i><span>Structured<br>information</span></div><b>→</b><div><i>04</i><span>n8n<br>validation</span></div><b>→</b><div><i>05</i><span>Workflow<br>rules</span></div><b>→</b><div class="human"><i>06</i><span>Human<br>decision</span></div><b>→</b><div><i>07</i><span>Authorised<br>action</span></div><b>→</b><div><i>08</i><span>Confirmation &<br>audit trail</span></div></div>
+        <div class="boundary-grid"><article><span class="boundary-icon green">✓</span><small>LEVEL 1</small><h3>Automate</h3><ul><li>Reminders</li><li>Approved information delivery</li><li>Task creation and routing</li><li>Acknowledgement</li><li>Status updates</li></ul></article><article><span class="boundary-icon yellow">◇</span><small>LEVEL 2</small><h3>Human approval</h3><ul><li>Roster publication</li><li>Medication-discrepancy resolution</li><li>Maternity callback completion</li><li>Exception closure</li></ul></article><article><span class="boundary-icon coral">♙</span><small>LEVEL 3</small><h3>Clinical decision remains human</h3><ul><li>Diagnosis and prescribing</li><li>Medication changes</li><li>Maternity triage decisions</li><li>Treatment and emergency-care decisions</li></ul></article></div>
+        <div class="governance-callout"><span>◈</span><div><h3>Safety by design</h3><p>The app supports information, communication and escalation. It does not replace maternity assessment, emergency services or clinical judgement. AI is never the only mechanism for detecting urgency.</p></div></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="urgentModal"><button class="modal-close">×</button><span class="warning-icon">!</span><h2>Get urgent help</h2><p>If you feel seriously unwell or believe this is an emergency, call your local emergency number now.</p><a href="tel:999" class="primary wide">Call emergency services · 999</a><a href="tel:0000000000" class="outline wide">Call maternity triage · 0000 000 000</a><small>Prototype numbers only. Do not use for clinical care.</small></dialog>
+  <div id="toast" class="toast">Saved</div>
+  <script src="app.js"></script>
+</body>
+</html>
