@@ -6,3 +6,5 @@
 *.staging
 *.staging.*
 .env*
+.vercel
+.env*

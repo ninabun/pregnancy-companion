@@ -24,7 +24,7 @@
       <p id="loginError" class="login-error" role="alert"></p>
       <button class="primary" type="submit">Sign in to Patient Mobile</button>
       <small class="privacy-note">Prototype only. Identity characters are checked locally and are not stored.</small>
-      <section class="demo-login-section"><div><b>Demo logins</b><small>Choose any fictional account to try the app.</small></div><div id="demoAccounts" class="demo-accounts"></div></section>
+      <details class="demo-login-section"><summary><b>Demo logins</b><span aria-hidden="true">⌄</span></summary><small class="demo-login-hint">Choose any fictional account to try the app.</small><div id="demoAccounts" class="demo-accounts"></div></details>
     </form>
   </section>
   <div id="appRoot" class="app-root locked" aria-hidden="true">
@@ -40,15 +40,15 @@
 
   <main>
     <section id="patient" class="view active">
-      <div class="view-intro"><span class="eyebrow">PATIENT EXPERIENCE</span><time id="hongKongTime" class="hong-kong-time" aria-live="polite"></time><h1 id="patientGreeting">Good afternoon, Maya</h1><p>Clear, approved guidance for every stage of your pregnancy.</p></div>
       <nav class="section-nav" aria-label="Patient sections">
         <button class="active" data-patient-page="home">Home</button><button data-patient-page="timeline">Timeline</button><button data-patient-page="ask">Ask</button><button data-patient-page="family">Family & labour</button><button data-patient-page="info">My information</button>
       </nav>
 
       <section id="home" class="content-section patient-page active">
+        <div class="view-intro home-intro"><span class="eyebrow">PATIENT EXPERIENCE</span><time id="hongKongTime" class="hong-kong-time" aria-live="polite"></time><h1 id="patientGreeting">Good afternoon, Maya</h1><p>Clear, approved guidance for every stage of your pregnancy.</p></div>
         <div class="hero-grid">
           <article class="week-card">
-            <div class="week-copy"><span id="gestationPill" class="pill light">15 WEEKS + 2 DAYS</span><div class="pregnancy-dates"><div><small>EXPECTED DATE OF CONFINEMENT (EDC)</small><strong id="patientEdc">2 January 2027</strong></div><div><small>TODAY</small><strong id="patientToday">13 July 2026</strong></div></div><h2>Your baby is about<br>the size of an apple.</h2><p id="babyDevelopment">About 10 cm from head to bottom. Tiny facial movements are beginning and your baby can hear sounds from inside your body.</p><div class="progress"><i id="pregnancyProgress"></i></div><div class="progress-label"><span>Trimester 2</span><span id="pregnancyRemaining">24 weeks + 5 days to EDC</span></div></div>
+            <div class="week-copy"><span id="gestationPill" class="pill light">15 WEEKS + 2 DAYS</span><div class="pregnancy-dates"><div><small>EXPECTED DATE OF CONFINEMENT (EDC)</small><strong id="patientEdc">2 January 2027</strong></div><div><small>CLINICAL RECORD DATE</small><strong id="patientToday">13 July 2026</strong></div></div><h2 id="babySizeHeadline">Your baby is about<br>the size of an apple.</h2><p id="babyDevelopment">About 10 cm from head to bottom. Tiny facial movements are beginning and your baby can hear sounds from inside your body.</p><div class="progress"><i id="pregnancyProgress"></i></div><div class="progress-label"><span id="trimesterLabel">Trimester 2</span><span id="pregnancyRemaining">24 weeks + 5 days to EDC</span></div></div>
             <div class="baby-orbit"><span id="orbitWeek">15</span><small>weeks</small><b id="orbitDays">+ 2 days</b></div>
           </article>
           <article class="next-card card"><span class="pill blue">NEXT APPOINTMENT</span><h3 id="appointmentTitle">Midwife appointment</h3><p id="appointmentDate">18 July 2026 · 10:30 AM</p><strong class="appointment-ga" data-appointment-date="2026-07-18">At 16 weeks + 0 days</strong><hr><small>PREPARE FOR YOUR VISIT</small><ul id="appointmentPreparation"><li>Bring your maternity record</li><li>Write down questions you want to ask</li><li>Routine blood pressure and urine check</li></ul></article>
