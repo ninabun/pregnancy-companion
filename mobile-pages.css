@@ -1,12 +1,19 @@
 .brand-cluster{display:flex;align-items:center;gap:16px;min-width:0}.brand-cluster .brand{flex:none}.brand-cluster .language-switch{flex:none}
+.staff-preview-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:9px clamp(20px,4vw,64px);background:#fff8e8;border-bottom:1px solid #ead7a7}.staff-preview-copy{display:grid;gap:1px;min-width:0}.staff-preview-copy b{color:#76591d;font-size:9px;letter-spacing:.14em}.staff-preview-copy small{color:#7d6f51;font-size:10px}.staff-preview-bar .view-nav{order:initial;grid-column:auto;justify-self:auto;margin:0;background:#f2ead7}.staff-preview-bar .view-nav button.active{box-shadow:0 3px 12px rgba(107,80,24,.1)}
+.site-header{grid-template-columns:1fr auto;min-height:70px}.section-nav{top:70px}
 .section-nav button{border:0;background:transparent;color:var(--muted);padding:8px 13px;border-radius:999px;white-space:nowrap;cursor:pointer}.section-nav button:hover,.section-nav button.active{background:#fff;color:var(--green);font-weight:800;box-shadow:0 3px 12px rgba(20,55,49,.08)}
 .patient-page{display:none!important}.patient-page.active{display:block!important}.patient-page.alternate.active{max-width:none}.patient-page.alternate.active>*{max-width:1096px;margin-left:auto;margin-right:auto}
 .logout-button{position:relative;display:flex;align-items:center;border:1px solid rgba(23,103,90,.22)!important;background:linear-gradient(145deg,#fff,#dceee8)!important;color:var(--green)!important;border-radius:999px!important;padding:7px 14px!important;font-weight:800;box-shadow:inset 1px 1px 2px rgba(255,255,255,.9),inset -2px -2px 5px rgba(23,103,90,.12),0 8px 20px rgba(23,103,90,.13);transform:perspective(300px) rotateX(0deg);transition:transform .2s,box-shadow .2s}.logout-button:hover{transform:perspective(300px) rotateX(-8deg) translateY(-1px);box-shadow:inset 1px 1px 2px #fff,inset -2px -2px 5px rgba(23,103,90,.15),0 12px 25px rgba(23,103,90,.2)}
 .resource-category{padding:20px}.resource-category header{display:flex;gap:13px;align-items:center}.resource-category header>span{display:grid;place-items:center;width:44px;height:44px;border-radius:9px;background:var(--mint);color:var(--green);font-weight:800}.resource-category h3{margin:2px 0;font-size:18px}.resource-category small{color:var(--muted)}.document-list{display:grid;gap:8px;margin-top:16px}.document-empty{color:var(--muted);font-size:12px;padding:12px;border:1px dashed var(--line);border-radius:9px}.document-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:10px}.document-item b,.document-item small{display:block}.document-item small{color:var(--muted)}.document-item button,.fact-sheet-link{border:0;background:var(--mint);color:var(--green);border-radius:7px;padding:7px 9px;font-weight:800;cursor:pointer;text-decoration:none;font-size:11px}
 .editor-card select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px 12px;color:var(--ink);background:#fbfcfa}.editor-help{color:var(--muted);margin:-12px 0 20px}.document-editor>div>label{max-width:100%}.upload-message{min-height:20px;color:var(--green)}.governance-document-list{display:grid;gap:8px;margin-top:18px}.governance-document{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:11px}.governance-document small{display:block;color:var(--muted)}.governance-document button{border:1px solid #e2b7b0;background:#fff;color:#a33f35;border-radius:7px;padding:7px 9px;cursor:pointer}
 .choice-buttons{display:flex;gap:7px;margin-top:9px}.choice-buttons button{border:1px solid var(--line);background:#fff;color:var(--green);border-radius:999px;padding:7px 13px;font-weight:800;cursor:pointer}.message.bot .fact-sheet-links{display:grid;gap:7px;margin-top:9px}.message.bot .fact-sheet-link{display:inline-flex;width:max-content}
-@media(max-width:1100px){.site-header{grid-template-columns:1fr auto}.view-nav{order:3;grid-column:1/-1;justify-self:center;margin-top:9px}.section-nav{top:122px}.brand-cluster{gap:8px}}
+@media(max-width:1100px){.site-header{grid-template-columns:1fr auto}.staff-preview-bar .view-nav{order:initial;grid-column:auto;justify-self:auto;margin:0}.section-nav{top:70px}.brand-cluster{gap:8px}}
 @media(max-width:700px){
+  .staff-preview-bar{display:grid;grid-template-columns:1fr;padding:8px 10px;gap:7px}
+  .staff-preview-copy{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .staff-preview-copy small{text-align:right;font-size:9px}
+  .staff-preview-bar .view-nav{display:grid;grid-template-columns:1fr 1fr;width:100%;margin:0}
+  .staff-preview-bar .view-nav button{min-width:0;padding:7px 9px;font-size:11px}
   .site-header{grid-template-columns:minmax(0,1fr);gap:9px;min-height:0;padding:12px 14px 10px}
   .brand-cluster{width:100%;justify-content:space-between;gap:8px}
   .brand-cluster .brand{min-width:0;gap:8px}
@@ -15,13 +22,11 @@
   .brand-cluster .brand small{display:block;font-size:8px!important;line-height:1.2}
   .language-switch{flex:0 0 auto}
   .language-switch button{padding:6px 9px;font-size:12px}
-  .view-nav{order:initial;grid-column:1;justify-self:stretch;display:grid;grid-template-columns:1fr 1fr;width:100%;margin:0}
-  .view-nav button{min-width:0;padding:8px 10px}
   .top-actions{position:static;justify-self:stretch;display:flex!important;width:100%;justify-content:space-between;gap:10px}
   .profile{display:flex!important;min-width:0}
   .profile small{max-width:calc(100vw - 150px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .logout-button{display:flex!important;flex:0 0 auto;padding:6px 13px!important}
-  .section-nav{top:154px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;overflow:visible;padding:8px 10px}
+  .section-nav{top:105px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;overflow:visible;padding:8px 10px}
   .section-nav button{min-width:0;padding:7px 5px;font-size:12px;text-align:center}
   .section-nav button:nth-child(-n+3){grid-column:span 2}
   .section-nav button:nth-child(n+4){grid-column:span 3}
