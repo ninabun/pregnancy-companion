@@ -1,72 +1,411 @@
-const titles = {
-  patient: ["PATIENT EXPERIENCE", "Good afternoon, Maya"],
-  staff: ["MATERNITY TEAM · SYNTHETIC DATA", "Clinical review workspace"],
-  content: ["ADMINISTRATION", "Content & pathway configuration"],
-  governance: ["OPERATING MODEL", "Governance boundaries"]
+const STORAGE_KEY = "pregnancy-companion-bilingual-content-v3";
+const LANGUAGE_KEY = "pregnancy-companion-language";
+const EDC_KEY = "antenatal-hospital-edc";
+const EDC_UPDATED_KEY = "antenatal-edc-updated-at";
+const DEFAULT_EDC = "2027-01-02";
+const demoAccounts = [
+  { name: "Maya Patel", id: "A1234" }, { name: "Chloe Wong", id: "B2345" },
+  { name: "Sophie Chan", id: "C3456" }, { name: "Emma Lee", id: "D4567" },
+  { name: "Olivia Lam", id: "E5678" }, { name: "Grace Ho", id: "F6789" },
+  { name: "Hannah Ng", id: "G7890" }, { name: "Isabella Cheung", id: "H8901" },
+  { name: "Zoe Lau", id: "J9012" }, { name: "Natalie Yip", id: "K0123" }
+];
+
+const defaults = {
+  en: {
+    babyDevelopment: "About 10 cm from head to bottom. Tiny facial movements are beginning and your baby can hear sounds from inside your body.", appointmentTitle: "Midwife appointment", appointmentDate: "18 July 2026 · 10:30 AM", appointmentPreparation: "Bring your maternity record\nWrite down questions you want to ask\nRoutine blood pressure and urine check", hospitalGuidelines: "Check the latest ward notice before travelling. Arrangements may change according to hospital operations and infection-control requirements.", familyBoundary: "Accompaniment may be restricted because of clinical condition, capacity, infection control, privacy, emergency procedures or professional assessment.", antenatalHours: "2:00–8:00 PM", antenatalVisitors: "Two registered visitors at a time", antenatalChildren: "Check with the ward before visiting", antenatalRegistration: "Photo identification at reception", postnatalPartner: "Access during designated hours", postnatalVisitors: "Two registered visitors at a time", postnatalSafety: "Clean hands before contact", postnatalChanges: "Shown in current hospital notices", labourNomination: "One designated adult", labourBring: "Registration confirmation and photo ID", labourScreening: "Health and infection-control check", labourEntry: "When invited by the labour team"
+  },
+  zh: {
+    babyDevelopment: "寶寶頭臀長約 10 厘米，面部開始出現細微動作，亦能聽到媽媽身體內的聲音。", appointmentTitle: "助產士產前檢查", appointmentDate: "2026 年 7 月 18 日 · 上午 10:30", appointmentPreparation: "攜帶產科紀錄\n預先寫下想詢問的問題\n接受例行血壓及尿液檢查", hospitalGuidelines: "前往醫院前請查閱最新病房通告。安排或會因醫院運作及感染控制要求而更改。", familyBoundary: "陪產安排可能因臨床狀況、病房容量、感染控制、私隱、緊急程序或專業評估而受到限制。", antenatalHours: "下午 2:00 至晚上 8:00", antenatalVisitors: "每次最多兩名已登記訪客", antenatalChildren: "兒童探訪前請先向病房查詢", antenatalRegistration: "於接待處出示附相片身份證明", postnatalPartner: "可於指定時段內進入", postnatalVisitors: "每次最多兩名已登記訪客", postnatalSafety: "接觸嬰兒前請清潔雙手", postnatalChanges: "請參閱醫院最新通告", labourNomination: "一名指定成年人", labourBring: "登記確認及附相片身份證明", labourScreening: "健康及感染控制篩查", labourEntry: "由產房團隊通知後方可進入"
+  }
 };
 
-document.querySelectorAll(".nav-item").forEach(button => button.addEventListener("click", () => {
-  document.querySelectorAll(".nav-item,.view").forEach(el => el.classList.remove("active"));
-  button.classList.add("active");
-  document.getElementById(button.dataset.view).classList.add("active");
-  document.getElementById("viewEyebrow").textContent = titles[button.dataset.view][0];
-  document.getElementById("viewTitle").textContent = titles[button.dataset.view][1];
-}));
+const zh = {
+  "CONCEPT PROTOTYPE":"概念原型","Fictional maternity data · Not connected to a live clinical system · Not intended for clinical use":"虛構產科資料 · 未連接真實臨床系統 · 不可用作臨床用途","ANTENATAL CARE COMPANION":"產前護理夥伴","Antenatal":"產前","Care Companion":"護理夥伴","Patient Mobile":"病人流動版","Governance":"內容管理","English":"English","Log out":"登出","PATIENT EXPERIENCE":"病人體驗","Good afternoon, Maya":"你好","Clear, approved guidance for every stage of your pregnancy.":"為懷孕每個階段提供清晰、經審核的指引。","Home":"首頁","Timeline":"懷孕時間線","Ask":"問一問","Family & labour":"家人及分娩","My information":"我的資訊","WEEK 15 OF 40":"懷孕第 15 週（共 40 週）","Your baby is about":"寶寶大小約如","the size of an apple.":"一個蘋果。","Trimester 2":"第二孕期","25 weeks to go":"尚餘 25 週","weeks":"週","NEXT":"下一項","PREPARE FOR YOUR VISIT":"就診準備","COMING UP":"即將到來","Your next milestones":"下一個重要階段","WEEK 16":"第 16 週","Routine antenatal visit":"例行產前檢查","Blood pressure, urine and wellbeing check.":"檢查血壓、尿液及整體健康狀況。","WEEKS 18–22":"第 18–22 週","Morphology scan":"結構超聲波檢查","A detailed ultrasound to check your baby's development.":"以詳細超聲波檢查寶寶發育情況。","WEEKS 24–28":"第 24–28 週","Glucose screening & blood tests":"血糖篩查及驗血","Checks for gestational diabetes and anaemia.":"檢查妊娠糖尿病及貧血。","PERSONALISED JOURNEY":"個人化旅程","Your pregnancy timeline":"你的懷孕時間線","Approved milestones based on your current gestational profile.":"根據目前孕週提供經審核的重要階段。","WEEKS 11–14 · COMPLETED":"第 11–14 週 · 已完成","Dating and Down's syndrome screening":"孕期及唐氏綜合症篩查","Ultrasound and approved screening information.":"超聲波及經審核的篩查資訊。","WEEK 15 · YOU ARE HERE":"第 15 週 · 目前階段","Second trimester begins":"進入第二孕期","Gestation-specific guidance and appointment preparation.":"孕週專屬指引及覆診準備。","Detailed ultrasound generally offered at 18–22 weeks.":"一般於第 18–22 週安排詳細超聲波。","Blood tests and glucose screening":"驗血及血糖篩查","Checks may include anaemia and gestational diabetes.":"檢查項目可能包括貧血及妊娠糖尿病。","APPROVED INFORMATION":"經審核資訊","Ask the Companion":"詢問護理夥伴","Ask about pregnancy stages, appointments, investigations and hospital guidance.":"查詢孕期階段、覆診、檢查及醫院指引。","Hello Maya. I can explain approved pregnancy and hospital information.":"你好。我可以解釋經審核的懷孕及醫院資訊。","I cannot diagnose, assess urgency or contact hospital staff for you.":"我不能作出診斷、評估緊急程度或代你聯絡醫院職員。","What happens at 15 weeks?":"懷孕 15 週會有甚麼變化？","When is my morphology scan?":"何時進行結構超聲波？","What are the visiting hours for the antenatal ward?":"產前病房的探訪時間是甚麼？","Who can accompany me during labour?":"分娩時誰可陪伴我？","I have vaginal bleeding.":"我有陰道出血。","Contact a healthcare provider":"聯絡醫護人員","Please approach your hospital or obstetric department for:":"如有以下情況，請聯絡醫院或產科部門：","Vaginal bleeding":"陰道出血","Abdominal pain":"腹痛","Watery or clear discharge":"水狀或透明分泌物","Reduced fetal movement, when relevant":"胎動減少（如適用）","Fever or severe vomiting":"發燒或嚴重嘔吐","Headache or visual disturbance":"頭痛或視力異常","Any other clinical concern":"任何其他臨床疑慮","Do not rely on this app for urgent or clinical assessment.":"請勿依賴本應用程式作緊急或臨床評估。","VISITOR & LABOUR SUPPORT":"訪客及分娩支援","Practical guidance for your family":"給家人的實用指引","Hospital-specific arrangements for ward visits and your nominated labour support person.":"有關病房探訪及指定陪產人士的醫院安排。","Hospital guidelines":"醫院指引","Updated":"已更新","ANTENATAL WARD":"產前病房","Visiting information":"探訪資訊","Visiting hours":"探訪時間","Visitors":"訪客人數","Children":"兒童","Registration":"登記要求","POSTNATAL WARD":"產後病房","After delivery":"分娩後","Partner or carer":"伴侶或照顧者","Other visitors":"其他訪客","Baby safety":"嬰兒安全","Temporary changes":"臨時安排","LABOUR ROOM":"產房","Your accompanying person":"陪產人士","Nomination":"指定人士","Bring":"攜帶文件","Screening":"篩查要求","Entry":"進入安排","Clinical care and safety come first":"臨床護理及安全為先","APPROVED RESOURCES":"經審核資源","Information reviewed and approved by the fictional maternity service.":"資訊由虛構產科服務審閱及批准。","FACTSHEET":"資料單張","Your second trimester":"你的第二孕期","Approved pregnancy guidance":"經審核懷孕指引","INVESTIGATION":"檢查","Morphology scan explained":"結構超聲波說明","What it checks and how to prepare":"檢查內容及準備方法","APPOINTMENT":"覆診","Preparing for your visit":"覆診前準備","Your appointment checklist":"覆診清單","HOSPITAL":"醫院","Ward and visitor information":"病房及訪客資訊","Current hospital guidance":"現行醫院指引","PATIENT MOBILE CONTENT":"病人流動版內容","Update the hospital-approved information shown in Patient Mobile. Changes are saved locally in this concept prototype.":"更新病人流動版顯示的醫院核准資訊。此概念原型會在本機儲存變更。","Content sections":"內容章節","Pregnancy Overview":"懷孕概覽","Hospital Guidelines":"醫院指引","Antenatal Ward":"產前病房","Labour Room":"產房","Postnatal Ward":"產後病房","Publish to Patient Mobile":"發布至病人流動版","Reset draft":"重設草稿","Pregnancy overview":"懷孕概覽","Baby development":"寶寶發育","Next appointment":"下一次覆診","Date and time":"日期及時間","Preparation checklist":"準備清單","One item per line":"每行一項","Current patient-facing notice":"現行病人通告","Safety and accompaniment notice":"安全及陪產通告","Visitors permitted":"允許訪客","What to bring":"需攜帶物品","Screening criteria":"篩查準則","Entry arrangements":"進入安排","Published to Patient Mobile":"已發布至病人流動版","Welcome to your maternity journey":"歡迎進入你的產科旅程","Sign in to view your personalised Patient Mobile experience.":"登入以查看你的個人化病人流動版。","Patient name":"病人姓名","First 5 characters of identity document":"身份證明文件首 5 個字元","Enter exactly five letters or numbers.":"請輸入剛好五個英文字母或數字。","Sign in to Patient Mobile":"登入病人流動版","Prototype only. Identity characters are checked locally and are not stored.":"僅供原型使用。身份證字元只會在本機核對，不會被儲存。"
+};
+Object.assign(zh, {
+  "PREGNANCY COMPANION": "懷孕夥伴",
+  "Pregnancy": "懷孕",
+  "Companion": "夥伴",
+  "Hong Kong identity document (first five characters):": "香港身份證明文件（首五個字元）：",
+  "Demo logins": "示範登入帳戶",
+  "Choose any fictional account to try the app.": "選擇任何虛構帳戶試用應用程式。",
+  "FACT SHEETS": "資料單張", "Pregnancy fact sheets": "懷孕資料單張", "Investigation information": "檢查資訊", "Appointment preparation": "覆診準備", "Guidelines & Fact Sheets": "指引及資料單張", "Document title": "文件標題", "Category": "類別", "Fact sheet": "資料單張", "Pregnancy stage or topic": "孕期階段或主題", "Chatbot keywords": "聊天機械人關鍵字", "PDF file": "PDF 文件", "Upload & Publish PDF": "上載及發布 PDF", "No published documents yet.": "尚未有已發布文件。", "Open PDF": "開啟 PDF", "Delete": "刪除"
+  ,"Not yet scheduled":"尚未安排","Completed":"已完成","2 July 2026":"2026 年 7 月 2 日","10 August 2026":"2026 年 8 月 10 日","9:20 AM":"上午 9:20","10:30 AM":"上午 10:30"
+});
 
-function openPatientTab(tab) {
-  document.querySelector('[data-view="patient"]').click();
-  document.querySelectorAll(".mobile-tabs button,.patient-panel").forEach(el => el.classList.remove("active"));
-  document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
-  document.getElementById(tab).classList.add("active");
+let activeLanguage = localStorage.getItem(LANGUAGE_KEY) || "en";
+let contentByLanguage = { en: { ...defaults.en }, zh: { ...defaults.zh }, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") };
+let content = contentByLanguage[activeLanguage];
+const originalTextNodes = [];
+
+function captureTextNodes() {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (!node.nodeValue.trim() || ["SCRIPT", "STYLE"].includes(node.parentElement?.tagName)) continue;
+    originalTextNodes.push({ node, english: node.nodeValue });
+  }
 }
-document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => openPatientTab(b.dataset.tab)));
-document.querySelectorAll("[data-tab-link]").forEach(b => b.addEventListener("click", () => openPatientTab(b.dataset.tabLink)));
 
-const modal = document.getElementById("urgentModal");
-document.querySelectorAll('[data-modal="urgent"]').forEach(b => b.addEventListener("click", () => modal.showModal()));
-document.querySelector(".modal-close").addEventListener("click", () => modal.close());
+function translateStatic(language) {
+  originalTextNodes.forEach(({ node, english }) => {
+    const trimmed = english.trim();
+    const translated = language === "zh" ? zh[trimmed] : trimmed;
+    node.nodeValue = english.replace(trimmed, translated || trimmed);
+  });
+  const placeholders = language === "zh" ? { loginName:"輸入病人全名", loginIdentity:"只限英文字母及數字", chatInput:"輸入問題……" } : { loginName:"Enter your full name", loginIdentity:"Letters and numbers only", chatInput:"Ask a question…" };
+  Object.entries(placeholders).forEach(([id, value]) => document.getElementById(id).placeholder = value);
+}
 
-const approvedAnswers = {
-  "What happens at 15 weeks?": "At 15 weeks, approved guidance describes rapid growth, developing facial movement and early hearing. Your next routine visit is at week 16. Development varies, and your maternity team can answer questions about your individual pregnancy.",
-  "When is my morphology scan?": "Your morphology scan is booked for 10 August 2026, when you will be around 20 weeks. This detailed ultrasound is generally offered between 18 and 22 weeks.",
-  "What blood tests are coming next?": "Your timeline shows blood tests and glucose screening between 24 and 28 weeks. The maternity team will confirm which tests apply to you and explain preparation.",
-  "What should I prepare for my appointment?": "Bring your maternity record and write down questions. Your week-16 visit usually includes blood pressure, urine and wellbeing checks.",
-  "Who can accompany me during labour?": "This prototype pathway allows one nominated adult, subject to registration, identification, health screening, capacity and the labour team's assessment. Open Family & labour for the full criteria and check the current hospital notice before admission.",
-  "Can children visit the postnatal ward?": "Children's access can vary by ward and infection-control arrangements. In this prototype, families should contact the postnatal ward before bringing a child and check the latest service notice.",
-  "What are the visiting hours for the antenatal ward?": "The fictional prototype hours are 2:00–8:00 PM, with two registered visitors at a time. Hospital arrangements can change, so confirm the current ward notice before travelling.",
-  "Can I change my nominated accompanying person?": "Changes may be possible before admission. Contact the maternity service so registration and screening can be updated; approval remains subject to local policy and the clinical team's assessment.",
-  "What documents should my accompanying person bring?": "The prototype guidance asks for registration confirmation and photo identification. The ward may request additional health-screening information, so check the latest admission instructions.",
-  "Can my partner stay during an emergency procedure?": "Not always. Accompaniment can be restricted during emergency or operative care because clinical safety, privacy, space and infection control take priority. The treating team makes the final decision.",
-  "What does my reviewed swab result mean?": "I can explain clinician-reviewed information, but I cannot independently interpret an unreviewed result. Your recorded factsheet explains that a positive Group B Streptococcus swab may affect care during labour. Please follow the plan provided by your maternity team."
+function setLanguage(language) {
+  activeLanguage = language;
+  localStorage.setItem(LANGUAGE_KEY, language);
+  document.documentElement.lang = language === "zh" ? "zh-HK" : "en";
+  document.querySelectorAll("[data-language]").forEach(button => button.classList.toggle("active", button.dataset.language === language));
+  translateStatic(language);
+  content = contentByLanguage[language];
+  applyContent();
+  populateEditor();
+  renderDemoAccounts();
+  renderDocumentLibrary().catch(() => {});
+  const signedInName = sessionStorage.getItem("pregnancy-companion-patient-name");
+  if (signedInName) unlockApp(signedInName);
+}
+
+function renderDemoAccounts() {
+  const container = document.getElementById("demoAccounts");
+  container.replaceChildren(...demoAccounts.map((account, index) => {
+    const card = document.createElement("div"); card.className = "demo-account";
+    const details = document.createElement("span");
+    const name = document.createElement("b"); name.textContent = account.name;
+    const id = document.createElement("small"); id.textContent = account.id;
+    details.append(name, id);
+    const use = document.createElement("button"); use.type = "button"; use.textContent = activeLanguage === "zh" ? "使用" : "Use demo";
+    use.dataset.demoIndex = String(index);
+    use.addEventListener("click", () => {
+      document.getElementById("loginName").value = account.name;
+      document.getElementById("loginIdentity").value = account.id;
+      document.getElementById("loginError").textContent = "";
+    });
+    card.append(details, use);
+    return card;
+  }));
+}
+
+function showView(id) {
+  document.querySelectorAll(".view, .view-nav button").forEach(el => el.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelector(`[data-view="${id}"]`).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showPatientPage(id) {
+  document.querySelectorAll(".patient-page, [data-patient-page]").forEach(el => el.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelector(`[data-patient-page="${id}"]`).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openDocumentDatabase() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("antenatal-document-library", 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains("documents")) request.result.createObjectStore("documents", { keyPath: "id" });
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function documentTransaction(mode, action) {
+  const database = await openDocumentDatabase();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction("documents", mode);
+    const store = transaction.objectStore("documents");
+    const request = action(store);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => database.close();
+  });
+}
+
+const getDocuments = () => documentTransaction("readonly", store => store.getAll());
+const saveDocument = document => documentTransaction("readwrite", store => store.put(document));
+const removeDocument = id => documentTransaction("readwrite", store => store.delete(id));
+
+async function openPublishedDocument(id) {
+  const documents = await getDocuments();
+  const documentRecord = documents.find(item => item.id === id);
+  if (!documentRecord) return;
+  const url = URL.createObjectURL(documentRecord.file);
+  window.open(url, "_blank", "noopener");
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+async function renderDocumentLibrary() {
+  const documents = (await getDocuments()).filter(item => item.language === activeLanguage);
+  ["factsheet", "investigation", "appointment", "hospital"].forEach(category => {
+    const container = document.getElementById(`resourceList-${category}`);
+    const matches = documents.filter(item => item.category === category);
+    if (!matches.length) {
+      const empty = document.createElement("p"); empty.className = "document-empty"; empty.textContent = activeLanguage === "zh" ? "尚未有已發布文件。" : "No published documents yet.";
+      container.replaceChildren(empty);
+      return;
+    }
+    container.replaceChildren(...matches.map(item => {
+      const row = document.createElement("div"); row.className = "document-item";
+      const details = document.createElement("div");
+      const title = document.createElement("b"); title.textContent = item.title;
+      const meta = document.createElement("small"); meta.textContent = item.stage || (activeLanguage === "zh" ? "經審核 PDF" : "Approved PDF");
+      const open = document.createElement("button"); open.type = "button"; open.textContent = activeLanguage === "zh" ? "開啟 PDF" : "Open PDF"; open.addEventListener("click", () => openPublishedDocument(item.id));
+      details.append(title, meta); row.append(details, open); return row;
+    }));
+  });
+  const governance = document.getElementById("governanceDocumentList");
+  if (!documents.length) {
+    const empty = document.createElement("p"); empty.className = "document-empty"; empty.textContent = activeLanguage === "zh" ? "尚未有已發布文件。" : "No published documents yet."; governance.replaceChildren(empty);
+  } else governance.replaceChildren(...documents.map(item => {
+    const row = document.createElement("div"); row.className = "governance-document";
+    const details = document.createElement("div"); const title = document.createElement("b"); title.textContent = item.title; const meta = document.createElement("small"); meta.textContent = `${item.category} · ${item.stage || "—"}`; details.append(title, meta);
+    const remove = document.createElement("button"); remove.type = "button"; remove.textContent = activeLanguage === "zh" ? "刪除" : "Delete"; remove.addEventListener("click", async () => { await removeDocument(item.id); await renderDocumentLibrary(); });
+    row.append(details, remove); return row;
+  }));
+}
+
+async function matchingDocuments(topic) {
+  const normalized = topic.toLowerCase();
+  return (await getDocuments()).filter(item => item.language === activeLanguage && `${item.title} ${item.stage} ${item.keywords}`.toLowerCase().includes(normalized));
+}
+
+function applyContent() {
+  Object.entries(content).forEach(([key, value]) => {
+    const target = document.getElementById(key);
+    if (!target) return;
+    if (key === "appointmentPreparation") target.replaceChildren(...value.split("\n").filter(Boolean).map(item => { const li = document.createElement("li"); li.textContent = item; return li; }));
+    else target.textContent = value;
+  });
+  const appointmentParts = content.appointmentDate.split("·").map(part => part.trim());
+  document.getElementById("timelineAppointmentDate").textContent = appointmentParts[0] || content.appointmentDate;
+  document.getElementById("timelineAppointmentTime").textContent = appointmentParts[1] || "";
+  const parsedAppointment = new Date(appointmentParts[0]);
+  if (!Number.isNaN(parsedAppointment.getTime())) {
+    const iso = `${parsedAppointment.getFullYear()}-${String(parsedAppointment.getMonth() + 1).padStart(2, "0")}-${String(parsedAppointment.getDate()).padStart(2, "0")}`;
+    document.querySelectorAll("#appointmentDate + .appointment-ga, #timelineAppointmentTime + .appointment-ga").forEach(node => node.dataset.appointmentDate = iso);
+  }
+  updateGestationalProfile();
+}
+
+function populateEditor() {
+  const form = document.getElementById("governanceForm");
+  Object.entries(content).forEach(([key, value]) => { if (form.elements[key]) form.elements[key].value = value; });
+  document.getElementById("hospitalEdc").value = localStorage.getItem(EDC_KEY) || DEFAULT_EDC;
+}
+
+function calendarDate(value) {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
+function hongKongTodayDate() {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.filter(part => part.type !== "literal").map(part => [part.type, part.value]));
+  return calendarDate(`${values.year}-${values.month}-${values.day}`);
+}
+
+function gestationAt(date, edc) {
+  const pregnancyStart = new Date(edc.getTime() - 280 * 86400000);
+  const totalDays = Math.max(0, Math.min(280, Math.round((date - pregnancyStart) / 86400000)));
+  return { totalDays, weeks: Math.floor(totalDays / 7), days: totalDays % 7 };
+}
+
+function formatClinicalDate(date) {
+  return new Intl.DateTimeFormat(activeLanguage === "zh" ? "zh-HK" : "en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" }).format(date);
+}
+
+function gestationLabel(ga, upper = false) {
+  const english = `${ga.weeks} weeks + ${ga.days} days`;
+  const chinese = `${ga.weeks} 週 + ${ga.days} 日`;
+  return (activeLanguage === "zh" ? chinese : english)[upper ? "toUpperCase" : "toString"]();
+}
+
+function updateGestationalProfile() {
+  const edcValue = localStorage.getItem(EDC_KEY) || DEFAULT_EDC;
+  const edc = calendarDate(edcValue);
+  const today = hongKongTodayDate();
+  const current = gestationAt(today, edc);
+  const remainingDays = Math.max(0, 280 - current.totalDays);
+  const remaining = { weeks: Math.floor(remainingDays / 7), days: remainingDays % 7 };
+  document.getElementById("patientEdc").textContent = formatClinicalDate(edc);
+  let edcNotice = document.getElementById("edcUpdateNotice");
+  if (!edcNotice) { edcNotice = document.createElement("em"); edcNotice.id = "edcUpdateNotice"; document.getElementById("patientEdc").after(edcNotice); }
+  Object.assign(edcNotice.style, { display: "block", marginTop: "3px", color: "#bcd7d0", fontSize: "9px", fontStyle: "normal" });
+  const updatedAt = localStorage.getItem(EDC_UPDATED_KEY);
+  edcNotice.textContent = updatedAt ? (activeLanguage === "zh" ? "EDC 已由產科團隊更新" : "EDC updated by your maternity team") : (activeLanguage === "zh" ? "由醫院確認 · 病人只讀" : "Hospital confirmed · Patient read-only");
+  document.getElementById("patientToday").textContent = formatClinicalDate(today);
+  document.getElementById("gestationPill").textContent = gestationLabel(current, true);
+  document.getElementById("orbitWeek").textContent = current.weeks;
+  document.getElementById("orbitDays").textContent = activeLanguage === "zh" ? `+ ${current.days} 日` : `+ ${current.days} days`;
+  document.getElementById("pregnancyProgress").style.width = `${(current.totalDays / 280) * 100}%`;
+  document.getElementById("pregnancyRemaining").textContent = activeLanguage === "zh" ? `距離 EDC 尚餘 ${remaining.weeks} 週 + ${remaining.days} 日` : `${remaining.weeks} weeks + ${remaining.days} days to EDC`;
+  document.getElementById("timelineCurrentGa").textContent = gestationLabel(current);
+  document.getElementById("timelineCurrentDate").textContent = formatClinicalDate(today);
+  document.getElementById("timelineCurrentWeek").textContent = current.weeks;
+  document.getElementById("timelineYouAreHere").textContent = `${gestationLabel(current, true)} · ${activeLanguage === "zh" ? "你目前的位置" : "YOU ARE HERE"}`;
+  document.querySelectorAll("[data-appointment-date]").forEach(node => {
+    const ga = gestationAt(calendarDate(node.dataset.appointmentDate), edc);
+    node.textContent = `${node.closest(".next-card") ? (activeLanguage === "zh" ? "到診時：" : "At ") : ""}${gestationLabel(ga)}`;
+  });
+}
+
+function initials(name) {
+  return name.trim().split(/\s+/).slice(0, 2).map(part => part[0]?.toUpperCase()).join("") || "P";
+}
+
+function hongKongClock() {
+  const now = new Date();
+  const hour = Number(new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Hong_Kong", hour: "2-digit", hourCycle: "h23"
+  }).format(now));
+  const timeText = new Intl.DateTimeFormat(activeLanguage === "zh" ? "zh-HK" : "en-HK", {
+    timeZone: "Asia/Hong_Kong", weekday: "long", year: "numeric", month: "long",
+    day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit"
+  }).format(now);
+  return { hour, timeText };
+}
+
+function updateHongKongGreeting(name = sessionStorage.getItem("pregnancy-companion-patient-name") || "Patient") {
+  const { hour, timeText } = hongKongClock();
+  const englishGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const chineseGreeting = hour < 12 ? "早晨" : hour < 18 ? "午安" : "晚上好";
+  const clock = document.getElementById("hongKongTime");
+  clock.textContent = activeLanguage === "zh" ? `香港時間 · ${timeText}` : `Hong Kong time · ${timeText}`;
+  clock.dateTime = new Date().toISOString();
+  document.getElementById("patientGreeting").textContent = `${activeLanguage === "zh" ? chineseGreeting : englishGreeting}, ${name}`;
+}
+
+function unlockApp(name) {
+  document.getElementById("patientDisplayName").textContent = name;
+  document.getElementById("patientInitials").textContent = initials(name);
+  updateHongKongGreeting(name);
+  document.getElementById("loginGate").classList.add("hidden");
+  document.getElementById("appRoot").classList.remove("locked");
+  document.getElementById("appRoot").setAttribute("aria-hidden", "false");
+}
+
+const answers = {
+  en: {
+    "What happens at 15 weeks?": () => content.babyDevelopment,
+    "When is my morphology scan?": () => "A morphology scan is generally offered between 18 and 22 weeks. Check your appointment record for the confirmed date.",
+    "What are the visiting hours for the antenatal ward?": () => `Current visiting hours are ${content.antenatalHours}. ${content.antenatalVisitors}.`,
+    "Who can accompany me during labour?": () => `${content.labourNomination}. ${content.labourBring}. Entry: ${content.labourEntry}.`
+  },
+  zh: {
+    "懷孕 15 週會有甚麼變化？": () => content.babyDevelopment,
+    "何時進行結構超聲波？": () => "結構超聲波一般於懷孕第 18 至 22 週進行。請查閱覆診紀錄確認日期。",
+    "產前病房的探訪時間是甚麼？": () => `現行探訪時間為${content.antenatalHours}。${content.antenatalVisitors}。`,
+    "分娩時誰可陪伴我？": () => `${content.labourNomination}。${content.labourBring}。進入安排：${content.labourEntry}。`
+  }
 };
 
-function addMessage(text, type="user") {
-  const el = document.createElement("div"); el.className = `message ${type}`;
-  el.innerHTML = type === "bot" ? `<span>✦</span><div><p>${text}</p></div>` : `<div><p>${text}</p></div>`;
-  document.getElementById("chatMessages").append(el); el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+function addMessage(text, type = "user") {
+  const message = document.createElement("div"); message.className = `message ${type}`;
+  if (type === "bot") { const mark = document.createElement("span"); mark.textContent = "✦"; message.append(mark); }
+  const body = document.createElement("div"); const p = document.createElement("p"); p.textContent = text; body.append(p); message.append(body);
+  document.getElementById("chatMessages").append(message); message.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
-function respond(question, concern) {
+
+function addFactSheetOffer(topic) {
+  const message = document.createElement("div"); message.className = "message bot";
+  const mark = document.createElement("span"); mark.textContent = "✦";
+  const body = document.createElement("div"); const prompt = document.createElement("p");
+  prompt.textContent = activeLanguage === "zh" ? "你想唔想睇相關嘅資料單張？" : "Would you like the related fact sheet?";
+  const choices = document.createElement("div"); choices.className = "choice-buttons";
+  const yes = document.createElement("button"); yes.type = "button"; yes.textContent = activeLanguage === "zh" ? "要" : "Yes";
+  const no = document.createElement("button"); no.type = "button"; no.textContent = activeLanguage === "zh" ? "唔要" : "No";
+  yes.addEventListener("click", async () => {
+    choices.remove();
+    const documents = await matchingDocuments(topic);
+    if (!documents.length) { addMessage(activeLanguage === "zh" ? "目前未有相關已發布資料單張。你可以喺「我的資訊」查看其他文件。" : "There is no published fact sheet for this topic yet. You can check My Information for other documents.", "bot"); return; }
+    const documentMessage = document.createElement("div"); documentMessage.className = "message bot";
+    const documentMark = document.createElement("span"); documentMark.textContent = "✦";
+    const documentBody = document.createElement("div"); const text = document.createElement("p"); text.textContent = activeLanguage === "zh" ? "以下係相關資料單張：" : "Here is the related fact sheet:";
+    const links = document.createElement("div"); links.className = "fact-sheet-links";
+    documents.forEach(item => { const link = document.createElement("button"); link.type = "button"; link.className = "fact-sheet-link"; link.textContent = `PDF · ${item.title}`; link.addEventListener("click", () => openPublishedDocument(item.id)); links.append(link); });
+    documentBody.append(text, links); documentMessage.append(documentMark, documentBody); document.getElementById("chatMessages").append(documentMessage); documentMessage.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  no.addEventListener("click", () => { choices.remove(); addMessage(activeLanguage === "zh" ? "冇問題。仲有冇其他問題或者有咩可以幫到你？" : "No problem. Is there anything else I can help you with?", "bot"); });
+  choices.append(yes, no); body.append(prompt, choices); message.append(mark, body); document.getElementById("chatMessages").append(message); message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function respond(question) {
   addMessage(question);
   setTimeout(() => {
-    if (concern || /bleed|watery|discharge|pain|movement|fever|vomit|headache|vision/i.test(question)) {
-      addMessage("This symptom needs contact with a healthcare provider. I cannot determine urgency or confirm that it is harmless. If you feel seriously unwell, use emergency services now. Otherwise, call maternity triage while I structure the concern for clinical review.", "bot");
-      setTimeout(() => modal.showModal(), 500);
-    } else addMessage(approvedAnswers[question] || "I can help with approved pregnancy information, appointments and investigations. I cannot diagnose or make clinical decisions. Please rephrase your question, or contact the maternity team if this is a health concern.", "bot");
-  }, 300);
+    const isConcern = /bleed|出血|watery|分泌物|pain|腹痛|movement|胎動|fever|發燒|vomit|嘔吐|headache|頭痛|vision|視力|unwell/i.test(question);
+    const fallback = activeLanguage === "zh" ? "我可以解釋經審核的懷孕、覆診、訪客及陪產資訊。如需個別臨床意見，請聯絡醫院或產科部門。" : "I can explain approved pregnancy, appointment, visitor and labour-support information. Please approach your hospital or obstetric department for individual clinical advice.";
+    const concern = activeLanguage === "zh" ? "請聯絡你的醫院或產科部門接受臨床評估。本應用程式不能評估緊急程度、聯絡職員或安排護理。" : "Please approach your hospital or obstetric department for clinical assessment. This app cannot assess urgency, contact staff or arrange care.";
+    addMessage(isConcern ? concern : answers[activeLanguage][question]?.() || fallback, "bot");
+    if (!isConcern && /morphology|結構超聲波/i.test(question)) setTimeout(() => addFactSheetOffer(activeLanguage === "zh" ? "結構超聲波" : "morphology"), 180);
+  }, 250);
 }
-document.querySelectorAll(".suggestions button").forEach(b => b.addEventListener("click", () => respond(b.textContent, b.dataset.concern)));
-document.querySelectorAll("[data-ask-link]").forEach(b => b.addEventListener("click", () => { openPatientTab("ask"); respond(b.dataset.askLink); }));
-document.querySelectorAll("[data-family-detail]").forEach(b => b.addEventListener("click", () => toast(`${b.textContent} · latest fictional guidance displayed`)));
-document.getElementById("chatForm").addEventListener("submit", e => { e.preventDefault(); const input = document.getElementById("chatInput"); if (input.value.trim()) { respond(input.value.trim()); input.value = ""; } });
 
-document.querySelectorAll(".row-action").forEach(b => b.addEventListener("click", () => document.getElementById("reviewDrawer").classList.add("open")));
-document.querySelector(".drawer-close").addEventListener("click", () => document.getElementById("reviewDrawer").classList.remove("open"));
-document.getElementById("acknowledge").addEventListener("click", e => { e.target.textContent = "✓ Acknowledged · assigned to you"; e.target.disabled = true; toast("Concern acknowledged and audit trail updated"); });
+document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.view)));
+document.querySelectorAll("[data-patient-page]").forEach(button => button.addEventListener("click", () => showPatientPage(button.dataset.patientPage)));
+document.querySelectorAll("[data-language]").forEach(button => button.addEventListener("click", () => setLanguage(button.dataset.language)));
+document.querySelectorAll(".suggestions button").forEach(button => button.addEventListener("click", () => respond(button.textContent)));
+document.getElementById("chatForm").addEventListener("submit", event => { event.preventDefault(); const input = document.getElementById("chatInput"); if (input.value.trim()) { respond(input.value.trim()); input.value = ""; } });
 
-function filterQueue() {
-  const q = document.getElementById("queueSearch").value.toLowerCase(), filter = document.getElementById("queueFilter").value;
-  document.querySelectorAll("#queueBody tr").forEach(row => row.hidden = !row.textContent.toLowerCase().includes(q) || (filter !== "All concerns" && !row.dataset.status.includes(filter)));
-}
-document.getElementById("queueSearch").addEventListener("input", filterQueue); document.getElementById("queueFilter").addEventListener("change", filterQueue);
-function toast(message) { const el = document.getElementById("toast"); el.textContent = message; el.classList.add("show"); setTimeout(() => el.classList.remove("show"), 2400); }
-document.getElementById("newContent").addEventListener("click", () => toast("Draft content item created · approval required before publishing"));
+document.getElementById("loginForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const name = document.getElementById("loginName").value.trim();
+  const identity = document.getElementById("loginIdentity").value.trim();
+  const error = document.getElementById("loginError");
+  const demo = demoAccounts.find(account => account.name.toLowerCase() === name.toLowerCase() && account.id === identity.toUpperCase());
+  if (!demo) { error.textContent = activeLanguage === "zh" ? "登入資料不正確。請使用下列其中一組示範帳戶。" : "The login details do not match. Use one of the demo accounts below."; return; }
+  error.textContent = "";
+  sessionStorage.setItem("pregnancy-companion-patient-name", demo.name);
+  document.getElementById("loginIdentity").value = "";
+  unlockApp(demo.name);
+});
+
+document.getElementById("logoutButton").addEventListener("click", () => { sessionStorage.removeItem("pregnancy-companion-patient-name"); location.reload(); });
+document.getElementById("governanceForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const formValues = Object.fromEntries(new FormData(event.currentTarget).entries());
+  const previousEdc = localStorage.getItem(EDC_KEY) || DEFAULT_EDC;
+  const nextEdc = formValues.edc || previousEdc;
+  delete formValues.edc;
+  if (nextEdc !== previousEdc) {
+    localStorage.setItem(EDC_KEY, nextEdc);
+    localStorage.setItem(EDC_UPDATED_KEY, new Date().toISOString());
+  }
+  content = { ...content, ...formValues };
+  contentByLanguage[activeLanguage] = content;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(contentByLanguage));
+  applyContent();
+  const toast = document.getElementById("toast"); toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 2400);
+});
+document.getElementById("resetContent").addEventListener("click", () => { contentByLanguage[activeLanguage] = { ...defaults[activeLanguage] }; content = contentByLanguage[activeLanguage]; localStorage.setItem(STORAGE_KEY, JSON.stringify(contentByLanguage)); localStorage.setItem(EDC_KEY, DEFAULT_EDC); populateEditor(); applyContent(); });
+document.getElementById("uploadDocument").addEventListener("click", async () => {
+  const title = document.getElementById("documentTitle").value.trim();
+  const category = document.getElementById("documentCategory").value;
+  const stage = document.getElementById("documentStage").value.trim();
+  const keywords = document.getElementById("documentKeywords").value.trim();
+  const file = document.getElementById("documentFile").files[0];
+  const message = document.getElementById("uploadMessage");
+  if (!title || !file || (file.type && file.type !== "application/pdf")) {
+    message.textContent = activeLanguage === "zh" ? "請輸入文件標題並選擇 PDF 檔案。" : "Enter a document title and choose a PDF file.";
+    return;
+  }
+  await saveDocument({ id: crypto.randomUUID(), title, category, stage, keywords, language: activeLanguage, file, uploadedAt: new Date().toISOString() });
+  message.textContent = activeLanguage === "zh" ? "PDF 已上載並發布至病人流動版。" : "PDF uploaded and published to Patient Mobile.";
+  ["documentTitle", "documentStage", "documentKeywords", "documentFile"].forEach(id => document.getElementById(id).value = "");
+  await renderDocumentLibrary();
+});
+
+captureTextNodes();
+setLanguage(activeLanguage);
+const signedInName = sessionStorage.getItem("pregnancy-companion-patient-name");
+if (signedInName) unlockApp(signedInName);
+renderDocumentLibrary().catch(() => {});
+setInterval(() => updateHongKongGreeting(), 1000);

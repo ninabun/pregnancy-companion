@@ -1,0 +1,44 @@
+/* Professional EDC and appointment hierarchy */
+.week-card{position:relative;min-height:590px;padding:42px 46px;background:linear-gradient(145deg,#14695b,#245f56)}
+.week-copy{max-width:none;width:100%;padding-right:210px}
+#gestationPill{padding:8px 12px;background:rgba(255,255,255,.14);font-size:10px;line-height:1;letter-spacing:.12em}
+.pregnancy-dates{display:grid;grid-template-columns:minmax(210px,1.25fr) minmax(150px,.75fr);gap:12px;max-width:520px;margin-top:18px}
+.pregnancy-dates>div{min-width:0;padding:14px 16px;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:rgba(255,255,255,.085)}
+.pregnancy-dates small,.pregnancy-dates strong,.pregnancy-dates em{display:block}
+.pregnancy-dates small{margin:0 0 6px;color:#b9d8d1;font-size:8px;font-weight:800;line-height:1.35;letter-spacing:.11em}
+.pregnancy-dates strong{color:#fff;font-size:19px;font-weight:750;line-height:1.18;letter-spacing:-.015em}
+.pregnancy-dates em{margin-top:5px;color:#c9dfda;font-size:9px;font-style:normal;line-height:1.35}
+.week-card h2{max-width:450px;margin:28px 0 18px;font:400 clamp(36px,3.1vw,48px)/1.04 Georgia,serif;letter-spacing:-.025em}
+.week-card p{max-width:480px;margin:0;font-size:15px;line-height:1.65}
+.week-card .progress{max-width:500px;margin-top:30px}
+.week-card .progress-label{max-width:500px;font-size:10px}
+.baby-orbit{position:absolute;right:42px;top:250px;width:160px;height:160px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.baby-orbit span{font-size:44px;line-height:.95}
+.baby-orbit small{margin-top:5px;font-size:11px;line-height:1}
+.baby-orbit b{display:block;margin-top:6px;color:#31584f;font-size:11px;line-height:1}
+
+.next-card{padding:36px 38px}
+.next-card .pill{font-size:9px;padding:7px 11px}
+.next-card h3{margin:30px 0 7px;font-size:28px;line-height:1.12;letter-spacing:-.02em}
+.next-card>p{margin:0;font-size:15px}
+.appointment-ga{display:block;color:var(--green);font-size:12px;font-weight:800}
+.next-card .appointment-ga{margin-top:12px;padding:9px 11px;border-radius:9px;background:var(--mint);font-size:13px}
+.next-card hr{margin:28px 0}
+.next-card>small{font-size:9px;font-weight:800;letter-spacing:.12em}
+.next-card ul{margin-top:16px;padding-left:20px;font-size:14px;line-height:1.65}
+.milestone .appointment-ga{font-size:10px!important;color:var(--green)!important;letter-spacing:.04em!important}
+
+.timeline-row{grid-template-columns:180px 52px 1fr!important}
+.timeline-appointment small{font-size:10px!important;font-weight:900!important}
+.timeline-appointment b{font-size:15px!important}
+.timeline-appointment span{font-size:12px!important}
+.timeline-appointment .appointment-ga{margin-top:6px;font-size:11px;color:var(--green)}
+.timeline-appointment.unscheduled b{color:var(--ink)!important;font-weight:750}
+
+.editor-panels #edit-antenatal{order:1}.editor-panels #edit-labour{order:2}.editor-panels #edit-postnatal{order:3}.editor-panels #edit-library{order:4}.editor-panels #edit-guidelines{order:5}.editor-panels #edit-overview{order:6}
+.edc-admin{display:grid;grid-template-columns:minmax(220px,.7fr) 1.3fr;gap:18px;align-items:center;margin-bottom:22px;padding:18px;border:1px solid #b9ddd3;border-radius:14px;background:#eef8f5}
+.edc-admin label{margin:0}.edc-admin p{margin:0;color:var(--muted);font-size:12px}.edc-admin strong{display:block;color:var(--green);margin-bottom:3px}
+
+@media(max-width:1050px){.week-card{min-height:600px}.week-copy{padding-right:165px}.baby-orbit{right:28px;width:140px;height:140px}.pregnancy-dates{grid-template-columns:1fr;max-width:330px}.week-card h2{font-size:38px;max-width:400px}}
+@media(max-width:900px){.week-card{min-height:560px}.week-copy{padding-right:190px}.pregnancy-dates{grid-template-columns:1.2fr .8fr;max-width:520px}.baby-orbit{right:38px;top:240px}}
+@media(max-width:650px){.week-card{min-height:auto;padding:28px}.week-copy{padding-right:0}.pregnancy-dates{grid-template-columns:1fr}.week-card h2{font-size:36px;margin-top:24px}.baby-orbit{position:relative;right:auto;top:auto;width:130px;height:130px;margin:24px auto 0;opacity:1}.week-card .progress,.week-card .progress-label{max-width:none}.edc-admin{grid-template-columns:1fr}.timeline-row{grid-template-columns:43px 1fr!important}.next-card{padding:28px}.next-card h3{font-size:25px}}

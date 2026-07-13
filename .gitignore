@@ -1,1 +1,8 @@
-.vercel
+.vercel/
+.env.local
+.env.*.local
+.deploy/
+.portfolio-staging/
+*.staging
+*.staging.*
+.env*
