@@ -25,7 +25,29 @@
   .section-nav button{min-width:0;padding:7px 5px;font-size:12px;text-align:center}
   .section-nav button:nth-child(-n+3){grid-column:span 2}
   .section-nav button:nth-child(n+4){grid-column:span 3}
+  .pregnancy-dates>div,.next-card,.milestone,.timeline-row,.timeline-row>div,.timeline-appointment{min-width:0}
+  .pregnancy-dates strong,.next-card>p,.timeline-appointment b,.timeline-appointment span,.hong-kong-time{overflow-wrap:anywhere}
+  .pregnancy-dates strong{font-size:clamp(17px,5.1vw,19px)}
+  .next-card>p{line-height:1.4}
+  #ask.content-section{padding:36px 12px 52px}
+  #ask .page-intro{margin-bottom:18px}
+  #ask .ask-layout{gap:12px}
+  #ask .chat-card{border-radius:16px}
+  #ask .messages{height:min(34vh,250px);min-height:180px;padding:14px 12px}
+  #ask .message{gap:6px;margin-bottom:9px}
+  #ask .message>span{font-size:11px}
+  #ask .message>div{max-width:88%;padding:9px 11px;font-size:12px;overflow-wrap:anywhere}
+  #ask .message small{font-size:10px;line-height:1.4}
+  #ask .suggestions{flex-wrap:nowrap;overflow-x:auto;padding:10px;gap:6px;scroll-snap-type:x proximity;scrollbar-width:none}
+  #ask .suggestions::-webkit-scrollbar{display:none}
+  #ask .suggestions button{flex:0 0 calc(100% - 4px);max-width:none;padding:7px 9px;font-size:11px;line-height:1.35;text-align:center;white-space:normal;scroll-snap-align:start}
+  #ask #chatForm{gap:6px;padding:10px}
+  #ask #chatForm input{min-width:0;padding:9px 10px;font-size:16px}
+  #ask #chatForm button{flex:0 0 38px;width:38px}
+  #ask .warning-card{padding:18px}
+  #ask .warning-card h3{margin:14px 0 8px;font-size:18px}
+  #ask .warning-card p,#ask .warning-card ul{font-size:12px}
   .content-section{padding-top:45px}
   .document-editor .field-grid{grid-template-columns:1fr}
 }
-@media(max-width:360px){.brand-cluster .brand b{font-size:16px!important}.language-switch button{padding:6px 7px}.profile small{max-width:calc(100vw - 145px)}}
+@media(max-width:360px){.brand-cluster .brand b{font-size:16px!important}.language-switch button{padding:6px 7px}.profile small{max-width:calc(100vw - 145px)}#ask.content-section{padding-inline:10px}#ask .messages{height:210px;padding:12px 10px}#ask .message>div{max-width:91%}}

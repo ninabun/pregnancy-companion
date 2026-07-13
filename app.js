@@ -4,6 +4,10 @@ const EDC_KEY = "pregnancy-companion-hospital-edc";
 const EDC_UPDATED_KEY = "pregnancy-companion-edc-updated-at";
 const ACCOUNT_KEY = "pregnancy-companion-patient-account";
 const DEFAULT_EDC = "2027-01-02";
+const CLINICAL_MONTHS = [
+  "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+  "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC",
+];
 const demoAccounts = [
   { name: "Maya Patel", id: "A1234", edc: "2026-09-18", recordDate: "2026-08-23", babySize: "a honeydew melon", development: "Your baby is gaining weight, practising breathing movements and preparing for birth.", appointment: ["2026-08-27", "10:30 AM", "Late pregnancy assessment"], investigation: ["2026-08-28", "9:20 AM", "Presentation and growth scan", "Confirms the baby's position, growth and fluid volume."], followUp: ["2026-09-03", "Delivery planning review", "Confirms birth preferences and labour arrangements."] },
   { name: "Chloe Wong", id: "B2345", edc: "2026-10-23", recordDate: "2026-09-01", babySize: "a squash", development: "Your baby's lungs and nervous system continue to mature while movements remain strong.", appointment: ["2026-09-07", "2:15 PM", "Third-trimester clinic"], investigation: ["2026-09-15", "11:00 AM", "Fetal growth scan", "Measures fetal growth, fluid and placental blood flow."], followUp: ["2026-10-02", "Group B streptococcus discussion", "Explains testing and intrapartum care options."] },
@@ -22,7 +26,7 @@ const defaults = {
     babyDevelopment:
       "About 10 cm from head to bottom. Tiny facial movements are beginning and your baby can hear sounds from inside your body.",
     appointmentTitle: "Midwife appointment",
-    appointmentDate: "18 July 2026 · 10:30 AM",
+    appointmentDate: "18 JUL 2026 · 10:30 AM",
     appointmentPreparation:
       "Bring your maternity record\nWrite down questions you want to ask\nRoutine blood pressure and urine check",
     hospitalGuidelines:
@@ -254,8 +258,8 @@ Object.assign(zh, {
   Delete: "刪除",
   "Not yet scheduled": "尚未安排",
   Completed: "已完成",
-  "2 July 2026": "2026 年 7 月 2 日",
-  "10 August 2026": "2026 年 8 月 10 日",
+  "2 JUL 2026": "2026 年 7 月 2 日",
+  "10 AUG 2026": "2026 年 8 月 10 日",
   "9:20 AM": "上午 9:20",
   "10:30 AM": "上午 10:30",
 });
@@ -586,12 +590,15 @@ function gestationAt(date, edc) {
 }
 
 function formatClinicalDate(date) {
-  return new Intl.DateTimeFormat(activeLanguage === "zh" ? "zh-HK" : "en-GB", {
-    timeZone: "UTC",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(date);
+  if (activeLanguage === "zh") {
+    return new Intl.DateTimeFormat("zh-HK", {
+      timeZone: "UTC",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    }).format(date);
+  }
+  return `${date.getUTCDate()} ${CLINICAL_MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
 function gestationLabel(ga, upper = false) {
@@ -610,8 +617,8 @@ function milestoneParts(item, type) {
 
 function dateTile(dateValue) {
   const date = calendarDate(dateValue);
-  const day = new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", day: "2-digit" }).format(date);
-  const month = new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", month: "short" }).format(date).toUpperCase();
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = CLINICAL_MONTHS[date.getUTCMonth()];
   return `<span class="date-tile">${day}<small>${month}</small></span>`;
 }
 
@@ -736,19 +743,38 @@ function hongKongClock() {
       hourCycle: "h23",
     }).format(now),
   );
-  const timeText = new Intl.DateTimeFormat(
-    activeLanguage === "zh" ? "zh-HK" : "en-HK",
-    {
+  const timeText = activeLanguage === "zh"
+    ? new Intl.DateTimeFormat("zh-HK", {
       timeZone: "Asia/Hong_Kong",
       weekday: "long",
       year: "numeric",
-      month: "long",
+      month: "numeric",
       day: "numeric",
       hour: "numeric",
       minute: "2-digit",
       second: "2-digit",
-    },
-  ).format(now);
+    }).format(now)
+    : (() => {
+      const dateParts = Object.fromEntries(
+        new Intl.DateTimeFormat("en-HK", {
+          timeZone: "Asia/Hong_Kong",
+          weekday: "long",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+          .formatToParts(now)
+          .filter((part) => part.type !== "literal")
+          .map((part) => [part.type, part.value]),
+      );
+      const clockTime = new Intl.DateTimeFormat("en-HK", {
+        timeZone: "Asia/Hong_Kong",
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+      }).format(now);
+      return `${dateParts.weekday}, ${Number(dateParts.day)} ${CLINICAL_MONTHS[Number(dateParts.month) - 1]} ${dateParts.year} at ${clockTime}`;
+    })();
   return { hour, timeText };
 }
 
