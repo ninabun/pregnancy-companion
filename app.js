@@ -227,6 +227,9 @@ const zh = {
 };
 Object.assign(zh, {
   "PREGNANCY COMPANION": "懷孕夥伴",
+  "Demo login IDs & passwords": "示範登入帳戶及密碼",
+  "Tap to reveal and choose an account": "撳一下展開並選擇帳戶",
+  "Choose any fictional account below. The selected name and five-character demo password will be filled in for you.": "請選擇以下任何虛構帳戶；系統會自動填入姓名及五個字元的示範密碼。",
   Pregnancy: "懷孕",
   Companion: "夥伴",
   "Hong Kong identity document (first five characters):":
