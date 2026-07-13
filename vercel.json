@@ -5,6 +5,7 @@
     { "src": "styles.css", "use": "@vercel/static" },
     { "src": "auth.css", "use": "@vercel/static" },
     { "src": "demo.css", "use": "@vercel/static" },
+    { "src": "edc.css", "use": "@vercel/static" },
     { "src": "mobile-pages.css", "use": "@vercel/static" },
     { "src": "timeline.css", "use": "@vercel/static" },
     { "src": "app.js", "use": "@vercel/static" }
