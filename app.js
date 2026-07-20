@@ -1,4 +1,4 @@
-const STORAGE_KEY = "pregnancy-companion-bilingual-content-v3";
+const STORAGE_KEY = "pregnancy-companion-bilingual-content-v4";
 const LANGUAGE_KEY = "pregnancy-companion-language";
 const EDC_KEY = "pregnancy-companion-hospital-edc";
 const EDC_UPDATED_KEY = "pregnancy-companion-edc-updated-at";
@@ -33,14 +33,14 @@ const defaults = {
       "Check the latest ward notice before travelling. Arrangements may change according to hospital operations and infection-control requirements.",
     familyBoundary:
       "Accompaniment may be restricted because of clinical condition, capacity, infection control, privacy, emergency procedures or professional assessment.",
-    antenatalHours: "2:00–8:00 PM",
+    antenatalHours: "12:00–1:00 PM and 5:00–8:00 PM",
     antenatalVisitors: "Two registered visitors at a time",
     antenatalChildren: "Check with the ward before visiting",
     antenatalRegistration: "Photo identification at reception",
-    postnatalPartner: "Access during designated hours",
+    postnatalHours: "12:00–1:00 PM and 5:00–8:00 PM",
     postnatalVisitors: "Two registered visitors at a time",
-    postnatalSafety: "Clean hands before contact",
-    postnatalChanges: "Shown in current hospital notices",
+    postnatalChildren: "Check with the ward before visiting",
+    postnatalRegistration: "Photo identification at reception",
     labourNomination: "One designated adult",
     labourBring: "Registration confirmation and photo ID",
     labourScreening: "Health and infection-control check",
@@ -57,14 +57,14 @@ const defaults = {
       "前往醫院前請查閱最新病房通告。安排或會因醫院運作及感染控制要求而更改。",
     familyBoundary:
       "陪產安排可能因臨床狀況、病房容量、感染控制、私隱、緊急程序或專業評估而受到限制。",
-    antenatalHours: "下午 2:00 至晚上 8:00",
+    antenatalHours: "中午 12:00 至下午 1:00 及下午 5:00 至晚上 8:00",
     antenatalVisitors: "每次最多兩名已登記訪客",
     antenatalChildren: "兒童探訪前請先向病房查詢",
     antenatalRegistration: "於接待處出示附相片身份證明",
-    postnatalPartner: "可於指定時段內進入",
+    postnatalHours: "中午 12:00 至下午 1:00 及下午 5:00 至晚上 8:00",
     postnatalVisitors: "每次最多兩名已登記訪客",
-    postnatalSafety: "接觸嬰兒前請清潔雙手",
-    postnatalChanges: "請參閱醫院最新通告",
+    postnatalChildren: "兒童探訪前請先向病房查詢",
+    postnatalRegistration: "於接待處出示附相片身份證明",
     labourNomination: "一名指定成年人",
     labourBring: "登記確認及附相片身份證明",
     labourScreening: "健康及感染控制篩查",
@@ -168,11 +168,6 @@ const zh = {
   Children: "兒童",
   Registration: "登記要求",
   "POSTNATAL WARD": "產後病房",
-  "After delivery": "分娩後",
-  "Partner or carer": "伴侶或照顧者",
-  "Other visitors": "其他訪客",
-  "Baby safety": "嬰兒安全",
-  "Temporary changes": "臨時安排",
   "LABOUR ROOM": "產房",
   "Your accompanying person": "陪產人士",
   Nomination: "指定人士",
