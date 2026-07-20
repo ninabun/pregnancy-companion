@@ -637,12 +637,31 @@ function renderDemoJourney(account) {
   const milestones = [appointment, investigation, followUp];
   document.querySelector(".milestone-grid").innerHTML = milestones.map((item, index) => `<article class="card milestone${index === 1 ? " featured" : ""}">${dateTile(item.date)}<div><small class="appointment-ga" data-appointment-date="${item.date}"></small><h3>${item.title}</h3><p>${item.description}</p></div></article>`).join("");
 
-  document.querySelector(".timeline-list").innerHTML = `
-    <article class="timeline-row complete"><aside class="timeline-appointment"><small>APPOINTMENT</small><b>${formatClinicalDate(previousDate)}</b><span>Completed</span><strong class="appointment-ga" data-appointment-date="${previousIso}"></strong></aside><span>✓</span><div><small>PREVIOUS REVIEW · COMPLETED</small><h3>Routine pregnancy review</h3><p>Clinical observations and pregnancy progress reviewed.</p></div></article>
-    <article class="timeline-row current"><aside class="timeline-appointment unscheduled"><small>CLINICAL RECORD DATE</small><b id="timelineCurrentGa"></b><span id="timelineCurrentDate"></span></aside><span id="timelineCurrentWeek"></span><div><small id="timelineYouAreHere"></small><h3>Current pregnancy stage</h3><p>${account.development}</p></div></article>
-    <article class="timeline-row"><aside class="timeline-appointment"><small>APPOINTMENT</small><b id="timelineAppointmentDate">${formatClinicalDate(calendarDate(appointment.date))}</b><span id="timelineAppointmentTime">${appointment.time}</span><strong class="appointment-ga" data-appointment-date="${appointment.date}"></strong></aside><span>${gestationAt(calendarDate(appointment.date), calendarDate(currentEdcValue())).weeks}</span><div><small>NEXT VISIT</small><h3>${appointment.title}</h3><p>${appointment.description}</p></div></article>
-    <article class="timeline-row"><aside class="timeline-appointment"><small>INVESTIGATION</small><b>${formatClinicalDate(calendarDate(investigation.date))}</b><span>${investigation.time}</span><strong class="appointment-ga" data-appointment-date="${investigation.date}"></strong></aside><span>${gestationAt(calendarDate(investigation.date), calendarDate(currentEdcValue())).weeks}</span><div><small>PERSONALISED INVESTIGATION</small><h3>${investigation.title}</h3><p>${investigation.description}</p></div></article>
-    <article class="timeline-row"><aside class="timeline-appointment"><small>FOLLOW-UP</small><b>${formatClinicalDate(calendarDate(followUp.date))}</b><strong class="appointment-ga" data-appointment-date="${followUp.date}"></strong></aside><span>${gestationAt(calendarDate(followUp.date), calendarDate(currentEdcValue())).weeks}</span><div><small>PLANNED CARE</small><h3>${followUp.title}</h3><p>${followUp.description}</p></div></article>`;
+  const timelineRows = [
+    {
+      date: previousIso,
+      html: `<article class="timeline-row complete"><aside class="timeline-appointment"><small>APPOINTMENT</small><b>${formatClinicalDate(previousDate)}</b><span>Completed</span><strong class="appointment-ga" data-appointment-date="${previousIso}"></strong></aside><span>✓</span><div><small>PREVIOUS REVIEW · COMPLETED</small><h3>Routine pregnancy review</h3><p>Clinical observations and pregnancy progress reviewed.</p></div></article>`,
+    },
+    {
+      date: account.recordDate,
+      html: `<article class="timeline-row current"><aside class="timeline-appointment unscheduled"><small>CLINICAL RECORD DATE</small><b id="timelineCurrentGa"></b><span id="timelineCurrentDate"></span></aside><span id="timelineCurrentWeek"></span><div><small id="timelineYouAreHere"></small><h3>Current pregnancy stage</h3><p>${account.development}</p></div></article>`,
+    },
+    {
+      date: appointment.date,
+      html: `<article class="timeline-row"><aside class="timeline-appointment"><small>APPOINTMENT</small><b id="timelineAppointmentDate">${formatClinicalDate(calendarDate(appointment.date))}</b><span id="timelineAppointmentTime">${appointment.time}</span><strong class="appointment-ga" data-appointment-date="${appointment.date}"></strong></aside><span>${gestationAt(calendarDate(appointment.date), calendarDate(currentEdcValue())).weeks}</span><div><small>NEXT VISIT</small><h3>${appointment.title}</h3><p>${appointment.description}</p></div></article>`,
+    },
+    {
+      date: investigation.date,
+      html: `<article class="timeline-row"><aside class="timeline-appointment"><small>INVESTIGATION</small><b>${formatClinicalDate(calendarDate(investigation.date))}</b><span>${investigation.time}</span><strong class="appointment-ga" data-appointment-date="${investigation.date}"></strong></aside><span>${gestationAt(calendarDate(investigation.date), calendarDate(currentEdcValue())).weeks}</span><div><small>PERSONALISED INVESTIGATION</small><h3>${investigation.title}</h3><p>${investigation.description}</p></div></article>`,
+    },
+    {
+      date: followUp.date,
+      html: `<article class="timeline-row"><aside class="timeline-appointment"><small>FOLLOW-UP</small><b>${formatClinicalDate(calendarDate(followUp.date))}</b><strong class="appointment-ga" data-appointment-date="${followUp.date}"></strong></aside><span>${gestationAt(calendarDate(followUp.date), calendarDate(currentEdcValue())).weeks}</span><div><small>PLANNED CARE</small><h3>${followUp.title}</h3><p>${followUp.description}</p></div></article>`,
+    },
+  ].sort((a, b) => a.date.localeCompare(b.date));
+  document.querySelector(".timeline-list").innerHTML = timelineRows
+    .map((item) => item.html)
+    .join("");
 }
 
 function applyDemoProfile(account) {
