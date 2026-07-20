@@ -11,8 +11,8 @@
 .brand b{font-size:23px!important;letter-spacing:-.025em}.brand small{font-size:10px!important}
 .view-intro h1,.governance-intro h1,.week-card h2,.next-card h3,.section-heading h2,.page-intro h2,.timeline-row h3,.warning-card h3,.guidance-head h3,.resource h3,.editor-index b,.editor-card h2,.login-card h1,.brand b,.baby-orbit span,.date-tile{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important}
 .view-intro h1,.governance-intro h1{font-size:clamp(44px,6vw,76px)!important}
-.home-intro{max-width:none;padding:0 0 18px}.home-intro h1{font-size:clamp(26px,3vw,36px)!important;margin:5px 0 6px!important;line-height:1.08!important}.home-intro p{margin:0;font-size:14px}.home-intro .hong-kong-time{margin:7px 0 0;font-size:11px}
-.hong-kong-time{display:block;margin:15px 0 2px;color:var(--muted);font-size:13px;font-weight:700;letter-spacing:.035em;font-variant-numeric:tabular-nums}
+.home-intro{max-width:none;padding:0 0 22px}.home-intro h1{font-size:clamp(30px,3.4vw,42px)!important;margin:7px 0 8px!important;line-height:1.08!important}.home-intro p{margin:0;font-size:16px}.home-intro .eyebrow{font-size:11px}.home-intro .hong-kong-time{margin:9px 0 0;font-size:15px}
+.hong-kong-time{display:block;margin:15px 0 2px;color:#506a64;font-size:15px;font-weight:750;line-height:1.4;letter-spacing:.02em;font-variant-numeric:tabular-nums}
 @media(max-width:900px){.top-actions{display:flex!important}.profile{display:none}.logout-button{display:none}}
 @media(max-width:650px){.language-switch button{padding:7px 9px}.top-actions{gap:4px}.site-header{grid-template-columns:1fr auto}.view-nav{grid-column:1/-1}.login-language{right:14px;top:14px}.login-card{padding:28px}}
 #home{padding-top:28px}

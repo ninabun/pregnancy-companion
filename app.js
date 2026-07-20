@@ -599,7 +599,7 @@ function formatClinicalDate(date) {
 }
 
 function gestationLabel(ga, upper = false) {
-  const english = `${ga.weeks} weeks + ${ga.days} days`;
+  const english = `${ga.weeks} weeks + ${ga.days} ${ga.days === 1 ? "day" : "days"}`;
   const chinese = `${ga.weeks} 週 + ${ga.days} 日`;
   return (activeLanguage === "zh" ? chinese : english)[
     upper ? "toUpperCase" : "toString"
@@ -623,8 +623,9 @@ function renderDemoJourney(account) {
   const appointment = milestoneParts(account.appointment, "appointment");
   const investigation = milestoneParts(account.investigation, "investigation");
   const followUp = milestoneParts(account.followUp, "followUp");
-  const recordDate = calendarDate(account.recordDate);
-  const previousDate = new Date(recordDate.getTime() - 21 * 86400000);
+  const currentDate = hongKongTodayDate();
+  const currentIso = currentDate.toISOString().slice(0, 10);
+  const previousDate = new Date(currentDate.getTime() - 21 * 86400000);
   const previousIso = previousDate.toISOString().slice(0, 10);
   document.getElementById("appointmentTitle").textContent = appointment.title;
   document.getElementById("appointmentDate").textContent = `${formatClinicalDate(calendarDate(appointment.date))} · ${appointment.time}`;
@@ -643,8 +644,8 @@ function renderDemoJourney(account) {
       html: `<article class="timeline-row complete"><aside class="timeline-appointment"><small>APPOINTMENT</small><b>${formatClinicalDate(previousDate)}</b><span>Completed</span><strong class="appointment-ga" data-appointment-date="${previousIso}"></strong></aside><span>✓</span><div><small>PREVIOUS REVIEW · COMPLETED</small><h3>Routine pregnancy review</h3><p>Clinical observations and pregnancy progress reviewed.</p></div></article>`,
     },
     {
-      date: account.recordDate,
-      html: `<article class="timeline-row current"><aside class="timeline-appointment unscheduled"><small>CLINICAL RECORD DATE</small><b id="timelineCurrentGa"></b><span id="timelineCurrentDate"></span></aside><span id="timelineCurrentWeek"></span><div><small id="timelineYouAreHere"></small><h3>Current pregnancy stage</h3><p>${account.development}</p></div></article>`,
+      date: currentIso,
+      html: `<article class="timeline-row current"><aside class="timeline-appointment unscheduled"><small>${activeLanguage === "zh" ? "目前孕期" : "CURRENT PREGNANCY"}</small><b id="timelineCurrentGa"></b></aside><span id="timelineCurrentWeek"></span><div><small id="timelineYouAreHere"></small><h3>Current pregnancy stage</h3><p>${account.development}</p></div></article>`,
     },
     {
       date: appointment.date,
@@ -671,7 +672,7 @@ function applyDemoProfile(account) {
   if (firstBotMessage) firstBotMessage.textContent = activeLanguage === "zh" ? `你好 ${account.name}。我可以解釋經審核的懷孕及醫院資訊。` : `Hello ${account.name}. I can explain approved pregnancy and hospital information.`;
   const firstSuggestion = document.querySelector(".suggestions button");
   const investigationSuggestion = document.querySelectorAll(".suggestions button")[1];
-  const ga = gestationAt(calendarDate(account.recordDate), calendarDate(currentEdcValue()));
+  const ga = gestationAt(hongKongTodayDate(), calendarDate(currentEdcValue()));
   if (firstSuggestion) firstSuggestion.textContent = activeLanguage === "zh" ? `懷孕 ${ga.weeks} 週會有甚麼變化？` : `What happens at ${ga.weeks} weeks?`;
   if (investigationSuggestion) investigationSuggestion.textContent = activeLanguage === "zh" ? `我的 ${account.investigation[2]} 何時進行？` : `When is my ${account.investigation[2]}?`;
   renderDemoJourney(account);
@@ -681,7 +682,7 @@ function updateGestationalProfile() {
   const account = activeDemoAccount();
   const edcValue = currentEdcValue();
   const edc = calendarDate(edcValue);
-  const today = calendarDate(account.recordDate);
+  const today = hongKongTodayDate();
   const current = gestationAt(today, edc);
   const remainingDays = Math.max(0, 280 - current.totalDays);
   const remaining = {
@@ -698,8 +699,8 @@ function updateGestationalProfile() {
   Object.assign(edcNotice.style, {
     display: "block",
     marginTop: "3px",
-    color: "#bcd7d0",
-    fontSize: "9px",
+    color: "#426c63",
+    fontSize: "11px",
     fontStyle: "normal",
   });
   const updatedAt = localStorage.getItem(accountStorageKey(EDC_UPDATED_KEY));
@@ -710,26 +711,24 @@ function updateGestationalProfile() {
     : activeLanguage === "zh"
       ? "由醫院確認 · 病人只讀"
       : "Hospital confirmed · Patient read-only";
-  document.getElementById("patientToday").textContent =
-    formatClinicalDate(today);
   document.getElementById("gestationPill").textContent = gestationLabel(
     current,
     true,
   );
   document.getElementById("orbitWeek").textContent = current.weeks;
   document.getElementById("orbitDays").textContent =
-    activeLanguage === "zh" ? `+ ${current.days} 日` : `+ ${current.days} days`;
+    activeLanguage === "zh"
+      ? `+ ${current.days} 日`
+      : `+ ${current.days} ${current.days === 1 ? "day" : "days"}`;
   document.getElementById("pregnancyProgress").style.width =
     `${(current.totalDays / 280) * 100}%`;
   document.getElementById("pregnancyRemaining").textContent =
     activeLanguage === "zh"
       ? `距離 EDC 尚餘 ${remaining.weeks} 週 + ${remaining.days} 日`
-      : `${remaining.weeks} weeks + ${remaining.days} days to EDC`;
+      : `${remaining.weeks} weeks + ${remaining.days} ${remaining.days === 1 ? "day" : "days"} to EDC`;
   document.getElementById("trimesterLabel").textContent = activeLanguage === "zh" ? `第 ${current.weeks < 14 ? 1 : current.weeks < 28 ? 2 : 3} 孕期` : `Trimester ${current.weeks < 14 ? 1 : current.weeks < 28 ? 2 : 3}`;
   document.getElementById("timelineCurrentGa").textContent =
     gestationLabel(current);
-  document.getElementById("timelineCurrentDate").textContent =
-    formatClinicalDate(today);
   document.getElementById("timelineCurrentWeek").textContent = current.weeks;
   document.getElementById("timelineYouAreHere").textContent =
     `${gestationLabel(current, true)} · ${activeLanguage === "zh" ? "你目前的位置" : "YOU ARE HERE"}`;
